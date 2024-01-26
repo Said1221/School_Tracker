@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1063852509526",
+    "project_id": "school-tracker-f629e",
+    "storage_bucket": "school-tracker-f629e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1063852509526:android:b327590f1f86484e026ef7",
+        "android_client_info": {
+          "package_name": "com.example.tracker"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8Xsd5Rx98EwYaOEkaCmIzUFf0FP-FU8E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
