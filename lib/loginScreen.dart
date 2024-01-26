@@ -1,7 +1,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:tracker/parentLayout.dart';
-import 'package:tracker/registerScreen.dart';
+import 'package:tracker/adminRegisterScreen.dart';
+import 'package:tracker/parentsRegisterScreen.dart';
 
 import 'adminLayout.dart';
 import 'constant/component.dart';
@@ -115,9 +116,16 @@ class loginScreen extends StatelessWidget {
 
                   Center(
                     child: TextButton(onPressed: (){
-                      navigateTo(context, registerScreen());
+                      if(visitor=='admin'){
+                        navigateTo(context, adminRegisterScreen());
+                      }
+
+                      else{
+                        navigateTo(context, parentsRegisterScreen());
+                      }
+
                     },
-                      child: const Text('Create an account ?',
+                      child: Text('Create an account ?',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 15,

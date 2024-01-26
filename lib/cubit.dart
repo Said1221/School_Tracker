@@ -2,7 +2,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tracker/state.dart';
-
 import 'navBarAdmin/adminContact.dart';
 import 'navBarAdmin/adminHome.dart';
 import 'navBarAdmin/adminTrack.dart';
