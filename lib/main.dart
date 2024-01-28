@@ -1,7 +1,11 @@
 import 'dart:io' show Platform;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:tracker/adminLayout.dart';
+import 'package:tracker/driverLayout.dart';
 import 'package:tracker/onBoardScreen.dart';
+import 'package:tracker/parentLayout.dart';
+
 
 
 void main() async{
@@ -32,7 +36,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home:  onBoarding(),
+      home: adminLayout(),
       debugShowCheckedModeBanner: false,
     );
   }

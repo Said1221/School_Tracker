@@ -2,6 +2,14 @@ import 'package:flutter/material.dart';
 
 String ?visitor;
 
+List<dynamic>busNumbers = [];
+
+List<dynamic>driverDetails = [];
+
+List<dynamic>studentDetails = [];
+
+String googleAPIKey = 'AIzaSyAMPA3WK_y4Q4QRUrsejPy4J_K4BnvArtE';
+
 Widget myDivider() => Padding(
   padding: const EdgeInsetsDirectional.all(
     10
