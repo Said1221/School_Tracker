@@ -5,6 +5,8 @@ import 'package:tracker/regCubit/regAdminModel.dart';
 import 'package:tracker/regCubit/regParentsModel.dart';
 import 'package:tracker/regCubit/regState.dart';
 
+import '../constant/component.dart';
+
 class RegCubit extends Cubit<RegState>{
   RegCubit() : super (regInitialState());
 
@@ -105,9 +107,20 @@ class RegCubit extends Cubit<RegState>{
       location: location,
       UID: UID,
     );
+    
+    FirebaseFirestore.instance.collection('users').get().then((value){
+      value.docs.forEach((element){
+        if (element.data()['email'] == schoolEmail){
+          ID2 = element.data()['UID'];
 
-    FirebaseFirestore.instance.collection('users').doc('G9NCYqrtmndR7w3tgaY3kPasqjw2').
-    collection('parents').doc(UID).set(model.toMap());
+          FirebaseFirestore.instance.collection('users').doc(ID2).
+          collection('parents').doc(UID).set(model.toMap());
+        }
+        else{
+          print('this school not found');
+        }
+      });
+    });
   }
 
 }

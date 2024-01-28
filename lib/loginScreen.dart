@@ -37,6 +37,15 @@ class loginScreen extends StatelessWidget {
               fontSize: 16,
               backgroundColor: Colors.green,
             );
+            if(visitor=='admin'){
+              navigateTo(context, adminLayout());
+            }
+            if(visitor=='parents'){
+              navigateTo(context, parentLayout());
+            }
+            if(visitor=='driver'){
+              navigateTo(context, driverLayout());
+            }
           }
 
           if(state is loginErrorState){

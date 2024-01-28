@@ -2,9 +2,13 @@ import 'dart:io' show Platform;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:tracker/adminLayout.dart';
+import 'package:tracker/cache_helper.dart';
 import 'package:tracker/driverLayout.dart';
+import 'package:tracker/loginScreen.dart';
 import 'package:tracker/onBoardScreen.dart';
 import 'package:tracker/parentLayout.dart';
+
+import 'constant/component.dart';
 
 
 
@@ -20,6 +24,7 @@ void main() async{
     )
   ):await Firebase.initializeApp();
 
+  await CacheHelper.init();
   runApp(MyApp());
 }
 
@@ -36,7 +41,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: adminLayout(),
+      home: CacheHelper.getData(key: 'ID') == null ? onBoarding() : parentLayout(),
       debugShowCheckedModeBanner: false,
     );
   }

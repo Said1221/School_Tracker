@@ -3,6 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tracker/cache_helper.dart';
 import 'package:tracker/constant/component.dart';
 import 'package:tracker/state.dart';
 import 'navBarAdmin/adminContact.dart';
@@ -51,7 +52,7 @@ class AppCubit extends Cubit<AppState>{
   void addBus({
     required String busNum,
 }){
-    FirebaseFirestore.instance.collection('users').doc('G9NCYqrtmndR7w3tgaY3kPasqjw2')
+    FirebaseFirestore.instance.collection('users').doc(CacheHelper.getData(key: 'ID'))
         .collection('BUS').doc(busNum).set({'busNum' : busNum})
         .then((value){
           print('added');
@@ -62,7 +63,7 @@ class AppCubit extends Cubit<AppState>{
 
   void getBus(){
     busNumbers.clear();
-    FirebaseFirestore.instance.collection('users').doc('G9NCYqrtmndR7w3tgaY3kPasqjw2')
+    FirebaseFirestore.instance.collection('users').doc(CacheHelper.getData(key: 'ID'))
         .collection('BUS').get().then((value){
           value.docs.forEach((element){
             busNumbers.add(element.data());
@@ -81,8 +82,8 @@ class AppCubit extends Cubit<AppState>{
     required String address,
     required String bus,
   }){
-    FirebaseFirestore.instance.collection('users').doc('G9NCYqrtmndR7w3tgaY3kPasqjw2')
-        .collection('Driver').doc(phone).set({
+    FirebaseFirestore.instance.collection('users').doc(CacheHelper.getData(key: 'ID'))
+        .collection('DRIVER').doc(phone).set({
       'name' : name,
       'email' : email,
       'phone' : phone,
@@ -98,8 +99,8 @@ class AppCubit extends Cubit<AppState>{
 
   void getDriver(){
     driverDetails.clear();
-    FirebaseFirestore.instance.collection('users').doc('G9NCYqrtmndR7w3tgaY3kPasqjw2')
-        .collection('Driver').get().then((value){
+    FirebaseFirestore.instance.collection('users').doc(CacheHelper.getData(key: 'ID'))
+        .collection('DRIVER').get().then((value){
       value.docs.forEach((element){
         driverDetails.add(element.data());
       });
@@ -117,8 +118,8 @@ class AppCubit extends Cubit<AppState>{
     required String studentClass,
     required String busNum,
   }){
-    FirebaseFirestore.instance.collection('users').doc('G9NCYqrtmndR7w3tgaY3kPasqjw2')
-        .collection('Student').doc(parentsPhone).set({
+    FirebaseFirestore.instance.collection('users').doc(CacheHelper.getData(key: 'ID'))
+        .collection('STUDENT').doc(parentsPhone).set({
       'name' : name,
       'address' : address,
       'parentsPhone' : parentsPhone,
@@ -134,8 +135,8 @@ class AppCubit extends Cubit<AppState>{
 
   void getStudent(){
     studentDetails.clear();
-    FirebaseFirestore.instance.collection('users').doc('G9NCYqrtmndR7w3tgaY3kPasqjw2')
-        .collection('Student').get().then((value){
+    FirebaseFirestore.instance.collection('users').doc(CacheHelper.getData(key: 'ID'))
+        .collection('STUDENT').get().then((value){
       value.docs.forEach((element){
         studentDetails.add(element.data());
       });
@@ -146,16 +147,35 @@ class AppCubit extends Cubit<AppState>{
   }
 
   void getParentsContact(){
-    FirebaseFirestore.instance.collection('users').get()
-        .then((value){
+    FirebaseFirestore.instance.collection('users').doc().collection('parents')
+        .get().then((value){
           value.docs.forEach((element){
-            if(element.data()['email'] == 'dfsd@gmail.com'){
-              print(element.data()['name']);
+            if(element.data()['UID'] == ID){
+              parentContact = element.data()['schoolEmail'];
+              print(parentContact);
+
+              // FirebaseFirestore.instance.collection('users').get()
+              // .then((value){
+              //   value.docs.forEach((element){
+              //     if(parentContact == element.data()['email']){
+              //       schoolName = element.data()['name'].toString();
+              //       schoolEmail = element.data()['email'].toString();
+              //       schoolPhone = element.data()['phone'].toString();
+              //
+              //       print(schoolName);
+              //       print(schoolEmail);
+              //       print(schoolPhone);
+              //     }
+              //   });
+              // });
             }
           });
+          emit(AppGetParentsContactSuccessState());
     }).catchError((error){
       print(error.toString());
+      emit(AppGetParentsContactErrorState());
     });
   }
+
   
 }

@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
 
+var ID;
+var ID2;
+
+var parentContact;
+
+var schoolName , schoolEmail , schoolPhone;
+
 String ?visitor;
 
 List<dynamic>busNumbers = [];
@@ -7,6 +14,9 @@ List<dynamic>busNumbers = [];
 List<dynamic>driverDetails = [];
 
 List<dynamic>studentDetails = [];
+
+List<dynamic>adminAndparents = [];
+
 
 String googleAPIKey = 'AIzaSyAMPA3WK_y4Q4QRUrsejPy4J_K4BnvArtE';
 
