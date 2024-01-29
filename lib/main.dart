@@ -9,6 +9,7 @@ import 'package:tracker/onBoardScreen.dart';
 import 'package:tracker/parentLayout.dart';
 
 import 'constant/component.dart';
+import 'navBarAdmin/adminTrack.dart';
 
 
 
@@ -24,7 +25,10 @@ void main() async{
     )
   ):await Firebase.initializeApp();
 
+
   await CacheHelper.init();
+  print(CacheHelper.getData(key: 'ID'));
+
   runApp(MyApp());
 }
 
@@ -41,7 +45,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: CacheHelper.getData(key: 'ID') == null ? onBoarding() : parentLayout(),
+      home: CacheHelper.getData(key: 'ID') == null ? onBoarding() : adminLayout(),
       debugShowCheckedModeBanner: false,
     );
   }

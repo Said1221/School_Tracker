@@ -62,12 +62,12 @@ class _parentsContactState extends State<parentsContact> {
                               SizedBox(
                                 height: 10,
                               ),
-                              Text('${schoolName.toString()}' , style: TextStyle(fontSize: 20),),
+                              Text(schoolName.toString() , style: TextStyle(fontSize: 20),),
                               SizedBox(
                                 height: 10,
                               ),
-                              Text('School administrator'),
-                              Text('01002819302' , style: TextStyle(color: Colors.grey),),
+                              Text(schoolEmail.toString()),
+                              Text(schoolPhone , style: TextStyle(color: Colors.grey),),
                             ],
                           ),
                         ),
@@ -91,12 +91,12 @@ class _parentsContactState extends State<parentsContact> {
                               SizedBox(
                                 height: 10,
                               ),
-                              Text('Driver' , style: TextStyle(fontSize: 20),),
+                              Text(driverName.toString() , style: TextStyle(fontSize: 20),),
                               SizedBox(
                                 height: 10,
                               ),
-                              Text('driver name'),
-                              Text('01002819302' , style: TextStyle(color: Colors.grey),),
+                              Text(driverEmail.toString()),
+                              Text(driverPhone.toString() , style: TextStyle(color: Colors.grey),),
                             ],
                           ),
                         ),

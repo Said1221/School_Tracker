@@ -181,7 +181,11 @@ class _driversState extends State<drivers> {
                     DropdownButton(
                         hint: const Text('select bus'),
                         value: bus,
-                        items: [busNumbers.toString()]
+                        items: [
+                          for(int i=busNumbers.length-1 ; i>=0 ; i--)
+                            busNumbers[i]['busNum'].toString()
+
+                        ]
                             .map((String value) {
                           return DropdownMenuItem<String>(
                             value: value,

@@ -18,6 +18,7 @@ class loginScreen extends StatelessWidget {
 
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
+  var phoneController = TextEditingController();
 
 
   @override
@@ -109,7 +110,7 @@ class loginScreen extends StatelessWidget {
                               )
                           ),
                         ),
-                        TextFormField(
+                        visitor != 'driver' ? TextFormField(
                           controller: passwordController,
                           keyboardType: TextInputType.visiblePassword,
                           style: TextStyle(color: Colors.white),
@@ -123,6 +124,25 @@ class loginScreen extends StatelessWidget {
                           },
                           decoration: const InputDecoration(
                               label: Text('Password',style: TextStyle(color: Colors.white),),
+                              prefixIcon: Icon(
+                                Icons.lock,
+                                color: Colors.white,
+                              )
+                          ),
+                        )
+                        : TextFormField(
+                          controller: phoneController,
+                          keyboardType: TextInputType.number,
+                          style: TextStyle(color: Colors.white),
+                          validator: (value){
+                            return null;
+
+                            // if(value.isEmpty){
+                            //   return 'please enter your password';
+                            // }
+                          },
+                          decoration: const InputDecoration(
+                              label: Text('Phone number',style: TextStyle(color: Colors.white),),
                               prefixIcon: Icon(
                                 Icons.lock,
                                 color: Colors.white,
@@ -143,9 +163,12 @@ class loginScreen extends StatelessWidget {
                                 color: Colors.grey
                             ),
                             child: MaterialButton(onPressed: (){
-                              cubit.loginUser(
+                              visitor != 'driver' ? cubit.loginUser(
                                   email: emailController.text,
                                   password: passwordController.text,
+                              ) : cubit.loginUser(
+                                  email: emailController.text,
+                                  password: phoneController.text
                               );
                             },
                               child: const Text("Login",style: TextStyle(color: Colors.white),),

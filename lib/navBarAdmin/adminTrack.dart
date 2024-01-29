@@ -13,7 +13,7 @@ class _adminTrackState extends State<adminTrack> {
   double _originLatitude = 31.0839595, _originLongitude = 29.7438707;
   double _destLatitude = 31.0839595, _destLongitude = 30.7438707;
   // double _originLatitude = 26.48424, _originLongitude = 50.04551;
-  // double _destLatitude = 26.46423, _destLongitude = 50.06358;
+  // double _destLatitude2 = 31.0839595, _destLongitude2 = 31.7438707;
   Map<MarkerId, Marker> markers = {};
   Map<PolylineId, Polyline> polylines = {};
   List<LatLng> polylineCoordinates = [];
@@ -29,9 +29,12 @@ class _adminTrackState extends State<adminTrack> {
         BitmapDescriptor.defaultMarker);
 
     /// destination marker
-    _addMarker(LatLng(_destLatitude, _destLongitude), "destination",
+    _addMarker(LatLng(_destLatitude , _destLongitude), "destination",
         BitmapDescriptor.defaultMarkerWithHue(90));
     _getPolyline();
+
+
+
   }
 
   @override

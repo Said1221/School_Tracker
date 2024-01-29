@@ -1,6 +1,7 @@
 
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tracker/cache_helper.dart';
@@ -67,6 +68,10 @@ class AppCubit extends Cubit<AppState>{
         .collection('BUS').get().then((value){
           value.docs.forEach((element){
             busNumbers.add(element.data());
+            // for(int x=busNumbers.length ; x>=1 ; x--){
+            //   dropButton.add(busNumbers[x]['busNum']);
+            // }
+            print(busNumbers[0]['busNum']);
           });
           emit(AppGetBusSuccessState());
     }).catchError((error){
@@ -91,8 +96,11 @@ class AppCubit extends Cubit<AppState>{
       'bus' : bus,
         })
         .then((value){
-      print('added');
-    }).catchError((error){
+          FirebaseAuth.instance.createUserWithEmailAndPassword(
+              email: email,
+              password: phone,
+          );
+        }).catchError((error){
       print('error');
     });
   }
@@ -147,34 +155,72 @@ class AppCubit extends Cubit<AppState>{
   }
 
   void getParentsContact(){
-    FirebaseFirestore.instance.collection('users').doc().collection('parents')
-        .get().then((value){
-          value.docs.forEach((element){
-            if(element.data()['UID'] == ID){
-              parentContact = element.data()['schoolEmail'];
-              print(parentContact);
 
-              // FirebaseFirestore.instance.collection('users').get()
-              // .then((value){
-              //   value.docs.forEach((element){
-              //     if(parentContact == element.data()['email']){
-              //       schoolName = element.data()['name'].toString();
-              //       schoolEmail = element.data()['email'].toString();
-              //       schoolPhone = element.data()['phone'].toString();
-              //
-              //       print(schoolName);
-              //       print(schoolEmail);
-              //       print(schoolPhone);
-              //     }
-              //   });
-              // });
+    FirebaseFirestore.instance.collection('users').get()
+    .then((value){
+      value.docs.forEach((element){
+        FirebaseFirestore.instance.collection('users').doc(element.data()['UID']).collection('parents')
+            .get().then((value){
+          value.docs.forEach((element){
+            if(element.data()['UID'] == CacheHelper.getData(key: 'ID')){
+              parentContact = element.data()['schoolEmail'];
+              parentContact2 = element.data()['phone'];
+
+              FirebaseFirestore.instance.collection('users').get()
+                  .then((value){
+                value.docs.forEach((element){
+                  if(parentContact == element.data()['email']){
+                    schoolName = element.data()['name'].toString();
+                    schoolEmail = element.data()['email'].toString();
+                    schoolPhone = element.data()['phone'].toString();
+                    adminUID = element.data()['UID'];
+
+                    print(adminUID);
+                    print(parentContact2);
+
+                    FirebaseFirestore.instance.collection('users').doc(adminUID)
+                    .collection('STUDENT').get().then((value){
+                      value.docs.forEach((element){
+                        if(parentContact2 == element.data()['parentsPhone']){
+                          parentContact3 = element.data()['bus'];
+
+                          print(parentContact3);
+
+                          FirebaseFirestore.instance.collection('users').doc(adminUID).
+                          collection('DRIVER').get().then((value){
+                            value.docs.forEach((element){
+                              if(parentContact3 == element.data()['bus']){
+                                driverName = element.data()['name'];
+                                driverEmail = element.data()['email'];
+                                driverPhone = element.data()['phone'];
+
+                                print(driverName);
+                                print(driverEmail);
+                                print(driverPhone);
+                                emit(AppGetParentsContactSuccessState());
+                              }
+                            });
+                          });
+                        }
+                      });
+                    });
+                  }
+
+                });
+              });
             }
           });
-          emit(AppGetParentsContactSuccessState());
-    }).catchError((error){
-      print(error.toString());
-      emit(AppGetParentsContactErrorState());
+
+        }).catchError((error){
+          print(error.toString());
+          emit(AppGetParentsContactErrorState());
+        });
+
+
+      });
     });
+
+
   }
 
   
