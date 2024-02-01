@@ -103,6 +103,36 @@ class _parentsContactState extends State<parentsContact> {
                       ),
                     ),
 
+                    SizedBox(
+                      height: 10,
+                    ),
+
+                    Expanded(
+                      child: ListView.separated(
+                        itemBuilder: (context , index)=>Card(
+                          elevation: 10,
+                          child: Padding(
+                            padding: EdgeInsets.all(15.0),
+                            child: Column(
+                              children: [
+                                CircleAvatar(
+                                  backgroundColor: Colors.white,
+                                  backgroundImage: AssetImage('assets/user.png'),
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Text(contactsName[index].toString(), style: TextStyle(fontSize: 20),),
+                                Text(contactsClass[index].toString()),
+                              ],
+                            ),
+                          ),
+                        ),
+                        separatorBuilder: (context,index)=>myDivider(),
+                        itemCount: contactsName.length,
+                      ),
+                    ),
+
                   ]
               ) :
                 Center(child: CircularProgressIndicator(color: Colors.blue))

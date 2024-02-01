@@ -53,12 +53,23 @@ class AppCubit extends Cubit<AppState>{
   void addBus({
     required String busNum,
 }){
+
     FirebaseFirestore.instance.collection('users').doc(CacheHelper.getData(key: 'ID'))
-        .collection('BUS').doc(busNum).set({'busNum' : busNum})
-        .then((value){
-          print('added');
-    }).catchError((error){
-      print('error');
+        .get().then((value){
+      schoolLat = value['latitude'];
+      schoolLong = value['longtude'];
+
+      FirebaseFirestore.instance.collection('users').doc(CacheHelper.getData(key: 'ID'))
+          .collection('BUS').doc(busNum).set({
+        'busNum' : busNum,
+        'latitude' : schoolLat,
+        'longtude' : schoolLong,
+          }).then((value){
+        print('added');
+      }).catchError((error){
+        print('error');
+      });
+
     });
   }
 
@@ -68,9 +79,9 @@ class AppCubit extends Cubit<AppState>{
         .collection('BUS').get().then((value){
           value.docs.forEach((element){
             busNumbers.add(element.data());
-            // for(int x=busNumbers.length ; x>=1 ; x--){
-            //   dropButton.add(busNumbers[x]['busNum']);
-            // }
+            for(int x=busNumbers.length-1 ; x>=1 ; x--){
+              dropButton.add(busNumbers[x]['busNum']);
+            }
             print(busNumbers[0]['busNum']);
           });
           emit(AppGetBusSuccessState());
@@ -87,6 +98,7 @@ class AppCubit extends Cubit<AppState>{
     required String address,
     required String bus,
   }){
+
     FirebaseFirestore.instance.collection('users').doc(CacheHelper.getData(key: 'ID'))
         .collection('DRIVER').doc(phone).set({
       'name' : name,
@@ -94,15 +106,16 @@ class AppCubit extends Cubit<AppState>{
       'phone' : phone,
       'address' : address,
       'bus' : bus,
-        })
+    })
         .then((value){
-          FirebaseAuth.instance.createUserWithEmailAndPassword(
-              email: email,
-              password: phone,
-          );
-        }).catchError((error){
+      FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email,
+        password: phone,
+      );
+    }).catchError((error){
       print('error');
     });
+
   }
 
   void getDriver(){
@@ -156,6 +169,9 @@ class AppCubit extends Cubit<AppState>{
 
   void getParentsContact(){
 
+    contactsName.clear();
+    contactsClass.clear();
+
     FirebaseFirestore.instance.collection('users').get()
     .then((value){
       value.docs.forEach((element){
@@ -183,6 +199,9 @@ class AppCubit extends Cubit<AppState>{
                       value.docs.forEach((element){
                         if(parentContact2 == element.data()['parentsPhone']){
                           parentContact3 = element.data()['bus'];
+
+                          contactsName.add(element.data()['name']);
+                          contactsClass.add(element.data()['studentClass']);
 
                           print(parentContact3);
 
@@ -221,6 +240,49 @@ class AppCubit extends Cubit<AppState>{
     });
 
 
+  }
+
+  void getDriverContact(){
+    var ID;
+    var bus;
+    FirebaseFirestore.instance.collection('users')
+        .get().then((value){
+          value.docs.forEach((element){
+            ID = element.data()['UID'];
+            FirebaseFirestore.instance.collection('users').doc(ID).collection('DRIVER')
+            .get().then((value){
+              value.docs.forEach((element){
+                if(element.data()['UID'] == CacheHelper.getData(key: 'ID')){
+                  FirebaseFirestore.instance.collection('users')
+                      .get().then((value){
+                        value.docs.forEach((element){
+                          schoolName = element.data()['name'];
+                          schoolEmail = element.data()['email'];
+                          schoolPhone = element.data()['phone'];
+                        });
+                  });
+
+                  bus = element.data()['bus'];
+                  FirebaseFirestore.instance.collection('users').doc(ID)
+                  .collection('STUDENT').get().then((value){
+                    value.docs.forEach((element){
+                      if(element.data()['bus'] == bus){
+                        contactsName.add(element.data()['name']);
+                        contactsAddress.add(element.data()['address']);
+                        contactsPhone.add(element.data()['parentsPhone']);
+                      }
+                    });
+                    emit(AppGetDriverContactSuccessState());
+                  }).catchError((error){
+                    emit(AppGetDriverContactErrorState());
+                    print(error.toString());
+                  });
+
+                }
+              });
+            });
+          });
+    });
   }
 
   

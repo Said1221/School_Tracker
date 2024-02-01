@@ -1,5 +1,10 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tracker/constant/component.dart';
+import 'package:tracker/cubit.dart';
+
+import '../state.dart';
 
 class driverContact extends StatefulWidget {
 
@@ -14,117 +19,103 @@ class _driverContactState extends State<driverContact> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Contact'),
-        flexibleSpace: Container(
-          decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Color(0xFF3383CD),
-                    Color(0xFF11249F),
-                  ]
-              )
-          ),
-        ),
-      ),
-      body: const Padding(
-        padding: EdgeInsets.all(8.0),
-        child: Expanded(
-          child: SizedBox(
-            width: double.infinity,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-                children:
-                [
-                  SizedBox(
-                    width: double.infinity,
-                    child: Card(
-                      elevation: 10,
-                      child: Padding(
-                        padding: EdgeInsets.all(15.0),
-                        child: Column(
-                          children: [
-                            CircleAvatar(
-                              backgroundColor: Colors.white,
-                              backgroundImage: AssetImage('assets/user.png'),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Text('School name' , style: TextStyle(fontSize: 20),),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Text('School administrator'),
-                            Text('01002819302' , style: TextStyle(color: Colors.grey),),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-
-                  Text('Students' , style: TextStyle(fontSize: 20),),
-
-                  SizedBox(
-                    height: 10,
-                  ),
-
-                  SizedBox(
-                    width: double.infinity,
-                    child: Card(
-                      elevation: 10,
-                      child: Padding(
-                        padding: EdgeInsets.all(15.0),
-                        child: Column(
-                          children: [
-                            CircleAvatar(
-                              backgroundColor: Colors.white,
-                              backgroundImage: AssetImage('assets/user.png'),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Text('student name'),
-                            Text('01002819302' , style: TextStyle(color: Colors.grey),),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: double.infinity,
-                    child: Card(
-                      elevation: 10,
-                      child: Padding(
-                        padding: EdgeInsets.all(15.0),
-                        child: Column(
-                          children: [
-                            CircleAvatar(
-                              backgroundColor: Colors.white,
-                              backgroundImage: AssetImage('assets/user.png'),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Text('student name'),
-                            Text('01002819302' , style: TextStyle(color: Colors.grey),),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-
-                ]
+    return BlocProvider(
+      create: (BuildContext)=>AppCubit()..getDriverContact(),
+      child: BlocConsumer<AppCubit , AppState>(
+        listener: (BuildContext context , AppState state){},
+          builder: (BuildContext context , AppState state){
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text('Contact'),
+              flexibleSpace: Container(
+                decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Color(0xFF3383CD),
+                          Color(0xFF11249F),
+                        ]
+                    )
+                ),
+              ),
             ),
-          ),
-        ),
+            body: Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Expanded(
+                child: SizedBox(
+                  width: double.infinity,
+                  child: state is AppGetDriverContactSuccessState ? Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children:
+                      [
+                        Card(
+                          elevation: 10,
+                          child: Padding(
+                            padding: EdgeInsets.all(15.0),
+                            child: Column(
+                              children: [
+                                CircleAvatar(
+                                  backgroundColor: Colors.white,
+                                  backgroundImage: AssetImage('assets/user.png'),
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Text(schoolName.toString() , style: TextStyle(fontSize: 20),),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Text(schoolEmail.toString()),
+                                Text(schoolPhone.toString() , style: TextStyle(color: Colors.grey),),
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+
+                        Text('Students' , style: TextStyle(fontSize: 20),),
+
+                        SizedBox(
+                          height: 10,
+                        ),
+
+                        Expanded(
+                          child: ListView.separated(
+                              itemBuilder: (context , index)=>Card(
+                                elevation: 10,
+                                child: Padding(
+                                  padding: EdgeInsets.all(15.0),
+                                  child: Column(
+                                    children: [
+                                      CircleAvatar(
+                                        backgroundColor: Colors.white,
+                                        backgroundImage: AssetImage('assets/user.png'),
+                                      ),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Text(contactsName[index].toString(), style: TextStyle(fontSize: 20),),
+                                      Text(contactsAddress[index].toString()),
+                                      Text(contactsPhone[index].toString() , style: TextStyle(color: Colors.grey),),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              separatorBuilder: (context,index)=>myDivider(),
+                              itemCount: contactsName.length,
+                          ),
+                        ),
+                      ]
+                  ) : Center(child: CircularProgressIndicator(color: Colors.blue,))
+                ),
+              ),
+            ),
+          );
+          },
       ),
     );
   }

@@ -25,9 +25,9 @@ void main() async{
     )
   ):await Firebase.initializeApp();
 
-
   await CacheHelper.init();
   print(CacheHelper.getData(key: 'ID'));
+  getCurrentAddress();
 
   runApp(MyApp());
 }

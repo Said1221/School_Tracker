@@ -159,6 +159,7 @@ class _driversState extends State<drivers> {
                           )
                       ),
                     ),
+
                     TextFormField(
                       controller: driverAddressController,
                       keyboardType: TextInputType.text,
@@ -173,11 +174,12 @@ class _driversState extends State<drivers> {
                       decoration: const InputDecoration(
                           label: Text('address',style: TextStyle(color: Colors.black),),
                           prefixIcon:Icon(
-                            Icons.location_pin,
+                            Icons.home,
                             color: Colors.black,
                           )
                       ),
                     ),
+                    
                     DropdownButton(
                         hint: const Text('select bus'),
                         value: bus,

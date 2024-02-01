@@ -17,7 +17,8 @@ class RegCubit extends Cubit<RegState>{
     required String email,
     required String phone,
     required String password,
-    required String location,
+    required String latitude,
+    required String longitude,
 }){
     FirebaseAuth.instance.createUserWithEmailAndPassword(
       email: email,
@@ -27,7 +28,8 @@ class RegCubit extends Cubit<RegState>{
           name: name,
           email: email,
           phone: phone,
-          location: location,
+          latitude: latitude,
+          longitude: longitude,
           UID: value.user!.uid,
       );
     }).catchError((error){
@@ -39,7 +41,8 @@ class RegCubit extends Cubit<RegState>{
     required String name,
     required String email,
     required String phone,
-    required String location,
+    required String latitude,
+    required String longitude,
     required String UID,
 
 }){
@@ -47,7 +50,8 @@ class RegCubit extends Cubit<RegState>{
         name: name,
         email: email,
         phone: phone,
-        location: location,
+        latitude: latitude,
+        longitude: longitude,
         UID: UID,
     );
 
@@ -70,7 +74,8 @@ class RegCubit extends Cubit<RegState>{
     required String schoolEmail,
     required String phone,
     required String password,
-    required String location,
+    required String latitude,
+    required String longitude,
 }){
     FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
@@ -81,7 +86,8 @@ class RegCubit extends Cubit<RegState>{
           email: email,
           schoolEmail: schoolEmail,
           phone: phone,
-          location: location,
+          latitude: latitude,
+          longitude: longitude,
           UID: value.user!.uid,
       );
     }).catchError((error){
@@ -95,7 +101,8 @@ class RegCubit extends Cubit<RegState>{
     required String email,
     required String schoolEmail,
     required String phone,
-    required String location,
+    required String latitude,
+    required String longitude,
     required String UID,
 }){
 
@@ -104,7 +111,8 @@ class RegCubit extends Cubit<RegState>{
       email: email,
       schoolEmail: schoolEmail,
       phone: phone,
-      location: location,
+      latitude: latitude,
+      longitude: longitude,
       UID: UID,
     );
     

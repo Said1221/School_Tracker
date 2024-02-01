@@ -1,6 +1,12 @@
+import 'dart:async';
+
+import 'dart:math' show cos, sqrt, asin;
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'package:location/location.dart';
+import 'package:tracker/constant/component.dart';
 
 
 class adminTrack extends StatefulWidget {
@@ -9,99 +15,184 @@ class adminTrack extends StatefulWidget {
 }
 
 class _adminTrackState extends State<adminTrack> {
-  late GoogleMapController mapController;
-  double _originLatitude = 31.0839595, _originLongitude = 29.7438707;
-  double _destLatitude = 31.0839595, _destLongitude = 30.7438707;
-  // double _originLatitude = 26.48424, _originLongitude = 50.04551;
-  // double _destLatitude2 = 31.0839595, _destLongitude2 = 31.7438707;
-  Map<MarkerId, Marker> markers = {};
-  Map<PolylineId, Polyline> polylines = {};
-  List<LatLng> polylineCoordinates = [];
-  PolylinePoints polylinePoints = PolylinePoints();
-  String googleAPiKey = "Please provide your api key";
+  final Completer<GoogleMapController> controller = Completer();
 
-  @override
-  void initState() {
-    super.initState();
+  var _placeDistance;
+  static LatLng sourceLocation = LatLng(latitude, longitude);
+  static LatLng destination = LatLng(31.10341583043134, 29.767880486363396);
 
-    /// origin marker
-    _addMarker(LatLng(_originLatitude, _originLongitude), "origin",
-        BitmapDescriptor.defaultMarker);
+  List<dynamic>Dis = [
+    {'latitude' : 31.104003759401245 , 'longitude' : 29.76719384086916},
+    {'latitude' : 31.0957724226152 , 'longitude' : 29.765477227133584},
+    {'latitude' : 31.08989245961883 , 'longitude' : 29.768567131857626},
+  ];
 
-    /// destination marker
-    _addMarker(LatLng(_destLatitude , _destLongitude), "destination",
-        BitmapDescriptor.defaultMarkerWithHue(90));
-    _getPolyline();
+  LocationData? currentLocation;
+
+  BitmapDescriptor sourceIcon = BitmapDescriptor.defaultMarker;
+  BitmapDescriptor destinationIcon = BitmapDescriptor.defaultMarker;
+  BitmapDescriptor currentLocationIcon = BitmapDescriptor.defaultMarker;
 
 
 
-  }
+  void getLiveLocation()async{
 
-  @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-          appBar: AppBar(title: const Text('track'),
-            flexibleSpace: Container(
-              decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        Color(0xFF3383CD),
-                        Color(0xFF11249F),
-                      ]
-                  )
-              ),
-            ),
-          ),
-          body: GoogleMap(
-            initialCameraPosition: CameraPosition(
-                target: LatLng(_originLatitude, _originLongitude), zoom: 15),
-            myLocationEnabled: true,
-            tiltGesturesEnabled: true,
-            compassEnabled: true,
-            scrollGesturesEnabled: true,
-            zoomGesturesEnabled: true,
-            onMapCreated: _onMapCreated,
-            markers: Set<Marker>.of(markers.values),
-            polylines: Set<Polyline>.of(polylines.values),
-          )),
-    );
-  }
+    GoogleMapController googleMapController = await controller.future;
 
-  void _onMapCreated(GoogleMapController controller) async {
-    mapController = controller;
-  }
+    Geolocator.getPositionStream().listen((Position position) {
+      print(LatLng(position.latitude, position.longitude));
+      cal();
+      sourceLocation = LatLng(position.latitude, position.longitude);
 
-  _addMarker(LatLng position, String id, BitmapDescriptor descriptor) {
-    MarkerId markerId = MarkerId(id);
-    Marker marker =
-    Marker(markerId: markerId, icon: descriptor, position: position);
-    markers[markerId] = marker;
-  }
+      googleMapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+          zoom: 11,
+          target: LatLng(
+            position.latitude,
+            position.longitude,
+          )
+      )));
 
-  _addPolyLine() {
-    PolylineId id = PolylineId("poly");
-    Polyline polyline = Polyline(
-        polylineId: id, color: Colors.red, points: polylineCoordinates);
-    polylines[id] = polyline;
-    setState(() {});
-  }
+      setState(() {
 
-  _getPolyline() async {
-    PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-      'AIzaSyC8Xsd5Rx98EwYaOEkaCmIzUFf0FP-FU8E',
-      PointLatLng(_originLatitude, _originLongitude),
-      PointLatLng(_destLatitude, _destLongitude),
-      travelMode: TravelMode.driving,
-      // wayPoints: [PolylineWayPoint(location: "Sabo, Yaba Lagos Nigeria")]
-    );
-    if (result.points.isNotEmpty) {
-      result.points.forEach((PointLatLng point) {
-        polylineCoordinates.add(LatLng(point.latitude, point.longitude));
       });
-    }
-    _addPolyLine();
+    });
+
   }
+
+  List<LatLng>polylineCoordinates = [];
+
+  void getPolyPoints()async{
+    PolylinePoints polylinePoints = PolylinePoints();
+
+    PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
+      googleAPIKey,
+      PointLatLng(sourceLocation.latitude, sourceLocation.longitude),
+
+
+      PointLatLng(Dis[0]['latitude'], Dis[0]['longitude']),
+    );
+
+    if(result.points.isNotEmpty){
+      result.points.forEach((PointLatLng point)=>
+          polylineCoordinates.add(LatLng(point.latitude, point.longitude))
+      );
+      setState(() {});
+    }
+
+  }
+
+  void setCustomMarkerIcon(){
+    BitmapDescriptor.fromAssetImage(
+        ImageConfiguration.empty,
+        "assets/bus.png"
+    ).then((value){
+      sourceIcon = value;
+    });
+  //
+  //   BitmapDescriptor.fromAssetImage(
+  //       ImageConfiguration.empty,
+  //       ""
+  //   ).then((value){
+  //     destinationIcon = value;
+  //   });
+  //
+  //   BitmapDescriptor.fromAssetImage(
+  //       ImageConfiguration.empty,
+  //       ""
+  //   ).then((value){
+  //     currentLocationIcon = value;
+  //   });
+  }
+
+  @override
+  void initState(){
+    getLiveLocation();
+    setCustomMarkerIcon();
+    getPolyPoints();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context){
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(_placeDistance.toString()),
+      ),
+
+      body: GoogleMap(
+          initialCameraPosition: CameraPosition(target: sourceLocation , zoom: 14.5),
+
+          polylines: {
+            Polyline(
+              polylineId: PolylineId('route'),
+              points: polylineCoordinates,
+              color: Colors.red,
+              width: 6,
+            )
+          },
+
+          markers: {
+            Marker(
+              markerId:MarkerId('source'),
+              // icon: sourceIcon,
+              position:sourceLocation,
+            ),
+
+            Marker(
+              markerId:MarkerId('destination'),
+              position:LatLng(Dis[0]['latitude'] , Dis[0]['longitude']),
+            ),
+
+          },
+
+          onMapCreated: (mapController){
+            controller.complete(mapController);
+          }
+
+      ),
+
+    );
+
+  }
+
+  void cal()async{
+    double distanceInMeters = await Geolocator.bearingBetween(
+      latitude,
+      longitude,
+      Dis[0]['latitude'],
+      Dis[0]['longitude'],
+    );
+
+    double _coordinateDistance(lat1, lon1, lat2, lon2) {
+      var p = 0.017453292519943295;
+      var c = cos;
+      var a = 0.5 -
+          c((lat2 - lat1) * p) / 2 +
+          c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p)) / 2;
+      return 12742 * asin(sqrt(a));
+    }
+
+    double totalDistance = 0.0;
+
+// Calculating the total distance by adding the distance
+// between small segments
+    for (int i = 0; i < polylineCoordinates.length - 1; i++) {
+      totalDistance += _coordinateDistance(
+        polylineCoordinates[i].latitude,
+        polylineCoordinates[i].longitude,
+        polylineCoordinates[i + 1].latitude,
+        polylineCoordinates[i + 1].longitude,
+      );
+    }
+
+// Storing the calculated total distance of the route
+    setState(() {
+      _placeDistance = totalDistance.toStringAsFixed(2);
+      print('DISTANCE: $_placeDistance km');
+    });
+
+
+
+  }
+
 }

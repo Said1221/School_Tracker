@@ -128,25 +128,6 @@ class adminRegisterScreen extends StatelessWidget {
                                 )
                             ),
                           ),
-                          TextFormField(
-                            controller: schoolLocation,
-                            keyboardType: TextInputType.text,
-                            style: const TextStyle(color: Colors.white),
-                            validator: (value){
-                              return null;
-
-                              // if(value.isEmpty){
-                              //   return 'please enter your password';
-                              // }
-                            },
-                            decoration: const InputDecoration(
-                                label: Text('School location',style: TextStyle(color: Colors.white),),
-                                prefixIcon: Icon(
-                                  Icons.location_pin,
-                                  color: Colors.white,
-                                )
-                            ),
-                          ),
 
                           const SizedBox(
                             height: 15,
@@ -162,11 +143,12 @@ class adminRegisterScreen extends StatelessWidget {
                               ),
                               child: MaterialButton(onPressed: (){
                                 cubit.adminReg(
-                                    name: schoolNameController.text,
-                                    email: emailController.text,
-                                    phone: phoneController.text,
-                                    password: passwordController.text,
-                                    location: "alex",
+                                  name: schoolNameController.text,
+                                  email: emailController.text,
+                                  phone: phoneController.text,
+                                  password: passwordController.text,
+                                  latitude: latitude.toString(),
+                                  longitude: longitude.toString(),
                                 );
                                 navigateTo(context, loginScreen());
                               },

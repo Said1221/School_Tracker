@@ -150,25 +150,6 @@ class parentsRegisterScreen extends StatelessWidget {
                                 )
                             ),
                           ),
-                          TextFormField(
-                            controller: homeLocation,
-                            keyboardType: TextInputType.text,
-                            style: const TextStyle(color: Colors.white),
-                            validator: (value){
-                              return null;
-
-                              // if(value.isEmpty){
-                              //   return 'please enter your password';
-                              // }
-                            },
-                            decoration: const InputDecoration(
-                                label: Text('Home location',style: TextStyle(color: Colors.white),),
-                                prefixIcon: Icon(
-                                  Icons.location_pin,
-                                  color: Colors.white,
-                                )
-                            ),
-                          ),
 
                           const SizedBox(
                             height: 15,
@@ -184,12 +165,13 @@ class parentsRegisterScreen extends StatelessWidget {
                               ),
                               child: MaterialButton(onPressed: (){
                                 cubit.parentsReg(
-                                    name: nameController.text,
-                                    email: emailController.text,
-                                    schoolEmail: schoolEmailController.text,
-                                    phone: phoneController.text,
-                                    password: passwordController.text,
-                                    location: 'safs',
+                                  name: nameController.text,
+                                  email: emailController.text,
+                                  schoolEmail: schoolEmailController.text,
+                                  phone: phoneController.text,
+                                  password: passwordController.text,
+                                  latitude: latitude.toString(),
+                                  longitude: longitude.toString(),
                                 );
                                 navigateTo(context, loginScreen());
                               },

@@ -2,14 +2,16 @@ class regAdminModel{
   late String name;
   late String email;
   late String phone;
-  late String location;
+  late String latitude;
+  late String longitude;
   late String UID;
 
   regAdminModel({
     required this.name,
     required this.email,
     required this.phone,
-    required this.location,
+    required this.latitude,
+    required this.longitude,
     required this.UID,
 });
 
@@ -26,7 +28,8 @@ class regAdminModel{
       'name' : name,
       'email' : email,
       'phone' : phone,
-      'location' : location,
+      'latitude' : latitude,
+      'longtude' : longitude,
       'UID' : UID,
     };
   }

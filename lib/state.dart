@@ -13,3 +13,7 @@ class AppGetStudentSuccessState extends AppState{}
 class AppGetParentsContactSuccessState extends AppState{}
 
 class AppGetParentsContactErrorState extends AppState{}
+
+class AppGetDriverContactSuccessState extends AppState{}
+
+class AppGetDriverContactErrorState extends AppState{}

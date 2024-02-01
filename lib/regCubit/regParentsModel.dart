@@ -3,7 +3,8 @@ class regParentsModel{
   late String email;
   late String schoolEmail;
   late String phone;
-  late String location;
+  late String latitude;
+  late String longitude;
   late String UID;
 
   regParentsModel({
@@ -11,7 +12,8 @@ class regParentsModel{
     required this.email,
     required this.schoolEmail,
     required this.phone,
-    required this.location,
+    required this.latitude,
+    required this.longitude,
     required this.UID,
   });
 
@@ -29,7 +31,8 @@ class regParentsModel{
       'email' : email,
       'schoolEmail' : schoolEmail,
       'phone' : phone,
-      'location' : location,
+      'latitude' : latitude,
+      'longitude' : longitude,
       'UID' : UID,
     };
   }

@@ -181,8 +181,11 @@ class _studentsState extends State<students> {
 
                     DropdownButton(
                         hint: const Text('select bus'),
-                        value: bus,
-                        items: [busNumbers.toString()]
+                        // value: bus,
+                        items: [
+                          for(int x=dropButton.length-1 ; x>=0 ; x--)
+                          dropButton[x].toString()
+                        ]
                             .map((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
