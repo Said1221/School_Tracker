@@ -3,8 +3,8 @@ class regParentsModel{
   late String email;
   late String schoolEmail;
   late String phone;
-  late String latitude;
-  late String longitude;
+  late double latitude;
+  late double longitude;
   late String UID;
 
   regParentsModel({

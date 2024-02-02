@@ -2,8 +2,8 @@ class regAdminModel{
   late String name;
   late String email;
   late String phone;
-  late String latitude;
-  late String longitude;
+  late double latitude;
+  late double longitude;
   late String UID;
 
   regAdminModel({

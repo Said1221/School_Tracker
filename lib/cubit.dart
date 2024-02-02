@@ -74,15 +74,18 @@ class AppCubit extends Cubit<AppState>{
   }
 
   void getBus(){
+    lat.clear();
+    long.clear();
     busNumbers.clear();
     FirebaseFirestore.instance.collection('users').doc(CacheHelper.getData(key: 'ID'))
         .collection('BUS').get().then((value){
           value.docs.forEach((element){
             busNumbers.add(element.data());
-            for(int x=busNumbers.length-1 ; x>=1 ; x--){
+            for(int x=busNumbers.length-1 ; x>=0 ; x--){
               dropButton.add(busNumbers[x]['busNum']);
+              lat.add(busNumbers[x]['latitude']);
+              long.add(busNumbers[x]['longtude']);
             }
-            print(busNumbers[0]['busNum']);
           });
           emit(AppGetBusSuccessState());
     }).catchError((error){
@@ -99,22 +102,23 @@ class AppCubit extends Cubit<AppState>{
     required String bus,
   }){
 
-    FirebaseFirestore.instance.collection('users').doc(CacheHelper.getData(key: 'ID'))
-        .collection('DRIVER').doc(phone).set({
-      'name' : name,
-      'email' : email,
-      'phone' : phone,
-      'address' : address,
-      'bus' : bus,
-    })
-        .then((value){
       FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
         password: phone,
-      );
-    }).catchError((error){
-      print('error');
-    });
+      ).then((value){
+        FirebaseFirestore.instance.collection('users').doc(CacheHelper.getData(key: 'ID'))
+            .collection('DRIVER').doc(phone).set({
+          'name' : name,
+          'email' : email,
+          'phone' : phone,
+          'address' : address,
+          'bus' : bus,
+          'UID' : value.user?.uid,
+        }).catchError((error){
+          print(error.toString());
+        });
+      });
+
 
   }
 
@@ -182,6 +186,8 @@ class AppCubit extends Cubit<AppState>{
               parentContact = element.data()['schoolEmail'];
               parentContact2 = element.data()['phone'];
 
+
+
               FirebaseFirestore.instance.collection('users').get()
                   .then((value){
                 value.docs.forEach((element){
@@ -190,7 +196,12 @@ class AppCubit extends Cubit<AppState>{
                     schoolEmail = element.data()['email'].toString();
                     schoolPhone = element.data()['phone'].toString();
                     adminUID = element.data()['UID'];
+                    schoolLocationLati = element.data()['latitude'];
+                    schoolLocationLong = element.data()['longtude'];
 
+
+                    print(schoolLocationLati);
+                    print(schoolLocationLong);
                     print(adminUID);
                     print(parentContact2);
 
@@ -202,6 +213,15 @@ class AppCubit extends Cubit<AppState>{
 
                           contactsName.add(element.data()['name']);
                           contactsClass.add(element.data()['studentClass']);
+
+                          FirebaseFirestore.instance.collection('users').doc(adminUID).
+                              collection('BUS').doc(parentContact3).get().then((value){
+                                busLocationLati = value['latitude'];
+                                busLocationLong = value['longtude'];
+
+                                print(busLocationLati);
+                                print(busLocationLong);
+                          });
 
                           print(parentContact3);
 
@@ -245,6 +265,13 @@ class AppCubit extends Cubit<AppState>{
   void getDriverContact(){
     var ID;
     var bus;
+    contactsName.clear();
+    contactsAddress.clear();
+    contactsPhone.clear();
+    contactsPhone.clear();
+    contactLatitude.clear();
+    contactLongtude.clear();
+
     FirebaseFirestore.instance.collection('users')
         .get().then((value){
           value.docs.forEach((element){
@@ -259,6 +286,18 @@ class AppCubit extends Cubit<AppState>{
                           schoolName = element.data()['name'];
                           schoolEmail = element.data()['email'];
                           schoolPhone = element.data()['phone'];
+                          schoolLat = element.data()['latitude'];
+                          schoolLong = element.data()['longtude'];
+
+                          busLat = element.data()['latitude'];
+                          busLong = element.data()['longtude'];
+
+
+                          print(schoolName);
+                          print(schoolEmail);
+                          print(schoolPhone);
+                          print(schoolLat);
+                          print(schoolLong);
                         });
                   });
 
@@ -270,6 +309,14 @@ class AppCubit extends Cubit<AppState>{
                         contactsName.add(element.data()['name']);
                         contactsAddress.add(element.data()['address']);
                         contactsPhone.add(element.data()['parentsPhone']);
+                        contactLatitude.add(element.data()['latitude']);
+                        contactLongtude.add(element.data()['longitude']);
+
+                        print(contactsName);
+                        print(contactsAddress);
+                        print(contactsPhone);
+                        print(contactLatitude);
+                        print(contactLongtude);
                       }
                     });
                     emit(AppGetDriverContactSuccessState());

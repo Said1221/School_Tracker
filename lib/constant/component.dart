@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:tracker/cache_helper.dart';
 
 var ID;
 var ID2;
@@ -9,10 +10,17 @@ var parentContact;
 var parentContact2;
 var parentContact3;
 
+var schoolLocationLati , schoolLocationLong;
+var busLocationLati , busLocationLong;
+var homeLocationLati , homeLocationLong;
+
 var schoolName , schoolEmail , schoolPhone , adminUID;
 var driverName , driverEmail , driverPhone;
 var studentName , studentAddress , studentPhone;
+
 var schoolLat , schoolLong ;
+
+var busLat , busLong ;
 
 String ?visitor;
 
@@ -30,6 +38,13 @@ List<dynamic>contactsName = [];
 List<dynamic>contactsAddress = [];
 List<dynamic>contactsPhone = [];
 List<dynamic>contactsClass = [];
+List<dynamic>contactLatitude = [];
+List<dynamic>contactLongtude = [];
+
+
+List<dynamic>lat = [];
+List<dynamic>long = [];
+
 
 String googleAPIKey = 'AIzaSyAMPA3WK_y4Q4QRUrsejPy4J_K4BnvArtE';
 
@@ -54,8 +69,7 @@ void navigateTo(context , widget) => Navigator.push(
 void NavigatAndFinish (context , widget)=> Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => widget), (Route<dynamic>route) => false);
 
 
-var latitude;
-var longitude;
+//
 var city;
 
 Future<Position>getCurrentAddress()async{
@@ -77,10 +91,13 @@ Future<Position>getCurrentAddress()async{
 
 
   return await Geolocator.getCurrentPosition().then((value)async{
-    latitude = value.latitude;
-    longitude = value.longitude;
+    CacheHelper.saveData(key: 'latitude', value: value.latitude);
+    CacheHelper.saveData(key: 'longitude', value: value.longitude);
 
-    List<Placemark> placemarks = await placemarkFromCoordinates(latitude , longitude);
+    List<Placemark> placemarks = await placemarkFromCoordinates(
+        CacheHelper.getData(key: 'latitude') ,
+      CacheHelper.getData(key: 'longitude') ,
+    );
     city = placemarks[0].administrativeArea;
 
     return city;

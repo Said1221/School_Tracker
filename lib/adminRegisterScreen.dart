@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tracker/cache_helper.dart';
 import 'package:tracker/regCubit/regCubit.dart';
 import 'package:tracker/regCubit/regState.dart';
 import 'constant/component.dart';
@@ -147,8 +148,8 @@ class adminRegisterScreen extends StatelessWidget {
                                   email: emailController.text,
                                   phone: phoneController.text,
                                   password: passwordController.text,
-                                  latitude: latitude.toString(),
-                                  longitude: longitude.toString(),
+                                  latitude: CacheHelper.getData(key: 'latitude'),
+                                  longitude: CacheHelper.getData(key: 'longitude'),
                                 );
                                 navigateTo(context, loginScreen());
                               },

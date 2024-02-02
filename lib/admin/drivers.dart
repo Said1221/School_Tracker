@@ -208,11 +208,11 @@ class _driversState extends State<drivers> {
                 actions: [
                   TextButton(onPressed: (){
                     cubit.addDriver(
-                        name: driverNameController.text,
-                        email: driverEmailController.text,
-                        phone: driverPhoneController.text,
-                        address: driverAddressController.text,
-                        bus: bus.toString(),
+                      name: driverNameController.text,
+                      email: driverEmailController.text,
+                      phone: driverPhoneController.text,
+                      address: driverAddressController.text,
+                      bus: bus.toString(),
                     );
                   }
                   , child: const Text('save'))

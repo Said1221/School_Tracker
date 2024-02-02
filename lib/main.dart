@@ -26,7 +26,9 @@ void main() async{
   ):await Firebase.initializeApp();
 
   await CacheHelper.init();
-  print(CacheHelper.getData(key: 'ID'));
+
+  ID = CacheHelper.getData(key: 'ID');
+  print(ID);
   getCurrentAddress();
 
   runApp(MyApp());
@@ -45,7 +47,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: CacheHelper.getData(key: 'ID') == null ? onBoarding() : adminLayout(),
+      home: CacheHelper.getData(key: 'ID') == null ? onBoarding() : driverLayout(),
       debugShowCheckedModeBanner: false,
     );
   }

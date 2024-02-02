@@ -47,7 +47,7 @@ class driverHome extends StatelessWidget {
         ),
 
         InkWell(
-          onTap: () => navigateTo(context, const driverTrack()),
+          onTap: () => navigateTo(context, driverTrack()),
           child: Container(
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(40),

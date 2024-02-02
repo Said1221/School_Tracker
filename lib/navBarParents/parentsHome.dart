@@ -47,7 +47,7 @@ class parentsHome extends StatelessWidget {
         ),
 
         InkWell(
-          onTap: () => navigateTo(context, const busTrack()),
+          onTap: () => navigateTo(context, busTrack()),
           child: Container(
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(40),

@@ -17,8 +17,8 @@ class RegCubit extends Cubit<RegState>{
     required String email,
     required String phone,
     required String password,
-    required String latitude,
-    required String longitude,
+    required double latitude,
+    required double longitude,
 }){
     FirebaseAuth.instance.createUserWithEmailAndPassword(
       email: email,
@@ -41,8 +41,8 @@ class RegCubit extends Cubit<RegState>{
     required String name,
     required String email,
     required String phone,
-    required String latitude,
-    required String longitude,
+    required double latitude,
+    required double longitude,
     required String UID,
 
 }){
@@ -74,8 +74,8 @@ class RegCubit extends Cubit<RegState>{
     required String schoolEmail,
     required String phone,
     required String password,
-    required String latitude,
-    required String longitude,
+    required double latitude,
+    required double longitude,
 }){
     FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
@@ -101,8 +101,8 @@ class RegCubit extends Cubit<RegState>{
     required String email,
     required String schoolEmail,
     required String phone,
-    required String latitude,
-    required String longitude,
+    required double latitude,
+    required double longitude,
     required String UID,
 }){
 
