@@ -67,6 +67,8 @@ class _driverTrackState extends State<driverTrack> {
 
   void getLiveLocation()async{
 
+    var uid;
+
     GoogleMapController googleMapController = await controller.future;
 
     Geolocator.getPositionStream().listen((Position position) {
@@ -74,11 +76,24 @@ class _driverTrackState extends State<driverTrack> {
       cal();
       busLocation = LatLng(position.latitude, position.longitude);
 
-      FirebaseFirestore.instance.collection('users').doc('8mUyvkEnotPLpIgKvRv0JZAZsxo2')
-      .collection('BUS').doc('1010').set(({
-        'latitude' : position.latitude,
-        'longtude' : position.longitude,
-      }));
+      FirebaseFirestore.instance.collection('users').get().
+          then((value){
+            value.docs.forEach((element){
+              uid = element.data()['UID'];
+              FirebaseFirestore.instance.collection('users').doc(uid)
+                  .collection('DRIVER').get().then((value){
+                    value.docs.forEach((element){
+                      if(element.data()['UID'] == CacheHelper.getData(key: 'ID')){
+                        FirebaseFirestore.instance.collection('users').doc(uid)
+                            .collection('BUS').doc(element.data()['bus']).update(({
+                          'latitude' : position.latitude,
+                          'longtude' : position.longitude,
+                        }));
+                      }
+                    });
+              });
+            });
+      });
 
       googleMapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
           zoom: 20,

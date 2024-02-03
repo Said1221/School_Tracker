@@ -5,10 +5,14 @@ import 'package:tracker/constant/component.dart';
 import 'package:tracker/cubit.dart';
 import 'package:tracker/state.dart';
 
-class buses extends StatelessWidget {
+class buses extends StatefulWidget {
 
+  @override
+  State<buses> createState() => _busesState();
+}
+
+class _busesState extends State<buses> {
   var busNumberController = TextEditingController();
-
 
   @override
   Widget build(BuildContext context) {
@@ -111,6 +115,10 @@ class buses extends StatelessWidget {
                     cubit.addBus(
                         busNum: busNumberController.text,
                     );
+                    setState(() {
+                      cubit.getBus();
+                    });
+                    Navigator.pop(context);
                   }, child: const Text('save'))
                 ],
               );
@@ -133,5 +141,4 @@ class buses extends StatelessWidget {
       ),
     );
   }
-
 }

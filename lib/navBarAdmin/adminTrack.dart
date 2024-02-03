@@ -1,8 +1,12 @@
 import 'dart:async';
-
-import 'dart:math' show cos, sqrt, asin;
+import 'dart:typed_data';
+import 'dart:ui';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
+import 'dart:ui' as ui;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:location/location.dart';
@@ -28,37 +32,47 @@ class _adminTrackState extends State<adminTrack> {
 
 
 
+  //
+  // Future<Uint8List> getBytesFromAsset(String path, int width) async {
+  //   ByteData data = await rootBundle.load(path);
+  //   ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(), targetWidth: width);
+  //   ui.FrameInfo fi = await codec.getNextFrame();
+  //   return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!.buffer.asUint8List();
+  // }
+
+
+
+
+
+
+
 
   // LocationData? currentLocation;
   //
   // BitmapDescriptor sourceIcon = BitmapDescriptor.defaultMarker;
-  // BitmapDescriptor destinationIcon = BitmapDescriptor.defaultMarker;
+  BitmapDescriptor destinationIcon = BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen);
+  // Uint8List? markerIcon;
   // BitmapDescriptor currentLocationIcon = BitmapDescriptor.defaultMarker;
 
 
 
 
-  // void setCustomMarkerIcon(){
-  //   BitmapDescriptor.hueBlue;
-  // //
-  // //   BitmapDescriptor.fromAssetImage(
-  // //       ImageConfiguration.empty,
-  // //       ""
-  // //   ).then((value){
-  // //     destinationIcon = value;
-  // //   });
-  // //
-  // //   BitmapDescriptor.fromAssetImage(
-  // //       ImageConfiguration.empty,
-  // //       ""
-  // //   ).then((value){
-  // //     currentLocationIcon = value;
-  // //   });
-  // }
+  void setCustomMarkerIcon()async{
+    BitmapDescriptor.hueBlue;
+
+  //   destinationIcon = await BitmapDescriptor.fromAssetImage(
+  //   ImageConfiguration(),
+  // 'assets/bus.png',
+  //   );
+
+
+    // markerIcon = await getBytesFromAsset('assets/bus.png', 100);
+
+  }
 
   @override
   void initState(){
-    // setCustomMarkerIcon();
+    setCustomMarkerIcon();
     super.initState();
   }
 
@@ -97,7 +111,7 @@ class _adminTrackState extends State<adminTrack> {
                 for(int x = long.length-1 ; x>=0 ; x--)
                   Marker(
 
-                    icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
+                    icon: destinationIcon,
                     markerId:MarkerId('destination'),
                     position:LatLng(lat[x] , long[x]),
                   ),

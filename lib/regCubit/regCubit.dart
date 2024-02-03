@@ -120,6 +120,12 @@ class RegCubit extends Cubit<RegState>{
       value.docs.forEach((element){
         if (element.data()['email'] == schoolEmail){
           ID2 = element.data()['UID'];
+          
+          FirebaseFirestore.instance.collection('users').doc(ID2)
+          .collection('STUDENT').doc(phone).update({
+            'latitude' : latitude,
+            'longitude' : longitude,
+          });
 
           FirebaseFirestore.instance.collection('users').doc(ID2).
           collection('parents').doc(UID).set(model.toMap());

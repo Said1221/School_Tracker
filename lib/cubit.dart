@@ -81,11 +81,13 @@ class AppCubit extends Cubit<AppState>{
         .collection('BUS').get().then((value){
           value.docs.forEach((element){
             busNumbers.add(element.data());
-            for(int x=busNumbers.length-1 ; x>=0 ; x--){
-              dropButton.add(busNumbers[x]['busNum']);
-              lat.add(busNumbers[x]['latitude']);
-              long.add(busNumbers[x]['longtude']);
-            }
+            // for(int x=busNumbers.length-1 ; x>=0 ; x--){
+              lat.add(element.data()['latitude']);
+              long.add(element.data()['longtude']);
+
+              print(lat);
+              print(long);
+            // }
           });
           emit(AppGetBusSuccessState());
     }).catchError((error){
@@ -150,6 +152,8 @@ class AppCubit extends Cubit<AppState>{
       'parentsPhone' : parentsPhone,
       'studentClass' : studentClass,
       'bus' : busNum,
+      'latitude' : 0,
+      'longitude' : 0,
         })
         .then((value){
       print('added');
