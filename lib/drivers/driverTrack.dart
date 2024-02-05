@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'dart:math' show cos, sqrt, asin;
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -10,6 +12,7 @@ import 'package:location/location.dart';
 import 'package:tracker/cache_helper.dart';
 import 'package:tracker/constant/component.dart';
 import 'package:tracker/cubit.dart';
+import 'package:tracker/notification.dart';
 
 
 class driverTrack extends StatefulWidget {
@@ -20,10 +23,15 @@ class driverTrack extends StatefulWidget {
 class _driverTrackState extends State<driverTrack> {
   final Completer<GoogleMapController> controller = Completer();
 
+
+  DatabaseReference ref =FirebaseDatabase.instance.ref(CacheHelper.getData(key: 'ID'));
+
+
   late GoogleMapController googleMapController;
   List<LatLng>polylineCoordinates = [];
 
-  var placeDistance;
+  var placeDistance = 0.0;
+  int? place;
 
 
 
@@ -65,23 +73,28 @@ class _driverTrackState extends State<driverTrack> {
 
 
 
+
+
   void getLiveLocation()async{
 
     var uid;
+
+
 
     GoogleMapController googleMapController = await controller.future;
 
     Geolocator.getPositionStream().listen((Position position) {
       print(LatLng(position.latitude, position.longitude));
+
       cal();
       busLocation = LatLng(position.latitude, position.longitude);
 
       FirebaseFirestore.instance.collection('users').get().
           then((value){
             value.docs.forEach((element){
-              uid = element.data()['UID'];
-              FirebaseFirestore.instance.collection('users').doc(uid)
+              FirebaseFirestore.instance.collection('users').doc(element.data()['UID'])
                   .collection('DRIVER').get().then((value){
+                    uid = element.data()['UID'];
                     value.docs.forEach((element){
                       if(element.data()['UID'] == CacheHelper.getData(key: 'ID')){
                         FirebaseFirestore.instance.collection('users').doc(uid)
@@ -143,10 +156,12 @@ class _driverTrackState extends State<driverTrack> {
     }
 
 // Storing the calculated total distance of the route
-//     setState(() {
-      placeDistance = totalDistance.toStringAsFixed(2);
-      print('DISTANCE: $placeDistance km');
-    // });
+    setState(() {
+//
+    placeDistance = totalDistance.toDouble();
+    ref.set(placeDistance.toInt());
+    print('DISTANCE: $placeDistance km');
+    });
 
 
 
@@ -263,6 +278,7 @@ class _driverTrackState extends State<driverTrack> {
 
                     Expanded(
                       child: TextButton(onPressed: (){
+
                       },
                           child: Text('Your school location' , style: TextStyle(fontSize: 15 , color: Colors.red),)
                       ),
@@ -279,9 +295,9 @@ class _driverTrackState extends State<driverTrack> {
                   ],
                 ),
 
-                Container(
-                  child: Text('${placeDistance.toString()}'),
-                ),
+                  placeDistance > 0 ? Container(
+                  child: Text('${placeDistance.toStringAsFixed(2)}'),
+                ) : Text('you are arrived'),
               ],
             ),
           ),

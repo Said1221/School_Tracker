@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:tracker/cache_helper.dart';
 import 'package:tracker/loginScreen.dart';
 
 import 'constant/component.dart';
@@ -25,8 +26,8 @@ class onBoarding extends StatelessWidget {
                           begin:Alignment.topRight,
                           end: Alignment.bottomLeft,
                           colors:[
-                            Color(0xFF3383CD),
-                            Color(0xFF11249F),
+                            Color(0xFFF16826),
+                            Color(0xFFC75833),
                           ]
                       )
                   )
@@ -39,9 +40,18 @@ class onBoarding extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
 
+                  Text('Who are you ?' , style: TextStyle(color: Colors.white , fontSize: 20
+                  , fontWeight: FontWeight.bold
+                  ),),
+
+                  SizedBox(
+                    height: 10,
+                  ),
+
                   InkWell(
                     onTap: (){
                       visitor = 'admin';
+                      CacheHelper.saveData(key: 'visitor', value: 'admin');
                       navigateTo(context, loginScreen());
                     },
 
@@ -70,6 +80,7 @@ class onBoarding extends StatelessWidget {
                   InkWell(
                     onTap: (){
                       visitor = 'parents';
+                      CacheHelper.saveData(key: 'visitor', value: 'parents');
                       navigateTo(context, loginScreen());
                     },
                     child: Container(
@@ -97,6 +108,7 @@ class onBoarding extends StatelessWidget {
                   InkWell(
                     onTap: (){
                       visitor = 'driver';
+                      CacheHelper.saveData(key: 'visitor', value: 'driver');
                       navigateTo(context, loginScreen());
                     },
                     child: Container(

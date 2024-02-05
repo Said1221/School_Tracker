@@ -115,99 +115,86 @@ class _busTrackState extends State<busTrack> {
 
   @override
   Widget build(BuildContext context){
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Tracking'),
-        flexibleSpace: Container(
-          decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Color(0xFF3383CD),
-                    Color(0xFF11249F),
-                  ]
-              )
-          ),
-        ),
-      ),
-
-      body:
-      Stack(
-        children: [
-          GoogleMap(
-              initialCameraPosition: CameraPosition(target: busLocation , zoom: 15),
-
-              polylines: {
-                Polyline(
-                  polylineId: PolylineId('route'),
-                  points: polylineCoordinates,
-                  color: Colors.red,
-                  width: 6,
-                )
-              },
-
-
-              markers: {
-
-                Marker(
-                  markerId:MarkerId('source'),
-                  // icon: sourceIcon,
-                  position:sourceLocation,
-                ),
-
-                Marker(
-                  markerId:MarkerId('bus'),
-                  icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet),
-                  position:busLocation,
-                ),
-
+    return SafeArea(
+      child: Scaffold(
+      
+        body:
+        Stack(
+          children: [
+            GoogleMap(
+                initialCameraPosition: CameraPosition(target: busLocation , zoom: 15),
+      
+                polylines: {
+                  Polyline(
+                    polylineId: PolylineId('route'),
+                    points: polylineCoordinates,
+                    color: Colors.red,
+                    width: 6,
+                  )
+                },
+      
+      
+                markers: {
+      
                   Marker(
-                    markerId:MarkerId('destination'),
-                    icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
-                    position:LatLng(schoolLocationLati , schoolLocationLong),
+                    markerId:MarkerId('source'),
+                    // icon: sourceIcon,
+                    position:sourceLocation,
                   ),
-
-              },
-
-              onMapCreated: (mapController){
-                controller.complete(mapController);
-              }
-
-          ),
-
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                Text('<< Go To >>' , style: TextStyle(fontSize: 25 , fontWeight: FontWeight.bold),),
-
-                Row(
-                  children: [
-
-                    Expanded(
-                      child: TextButton(onPressed: (){
-                      },
-                          child: Text('Your school location' , style: TextStyle(fontSize: 15 , color: Colors.red),)
-                      ),
+      
+                  Marker(
+                    markerId:MarkerId('bus'),
+                    icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet),
+                    position:busLocation,
+                  ),
+      
+                    Marker(
+                      markerId:MarkerId('destination'),
+                      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
+                      position:LatLng(schoolLocationLati , schoolLocationLong),
                     ),
-
-                    Expanded(
-                      child: TextButton(onPressed: (){
-
-                      },
-                          child: Text('all buses location', style: TextStyle(fontSize: 15 , color: Colors.green),)
-                      ),
-                    ),
-
-                  ],
-                ),
-              ],
+      
+                },
+      
+                onMapCreated: (mapController){
+                  controller.complete(mapController);
+                }
+      
             ),
-          ),
-        ],
+      
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  Text('<< Go To >>' , style: TextStyle(fontSize: 25 , fontWeight: FontWeight.bold),),
+      
+                  Row(
+                    children: [
+      
+                      Expanded(
+                        child: TextButton(onPressed: (){
+                        },
+                            child: Text('Your school location' , style: TextStyle(fontSize: 15 , color: Colors.red),)
+                        ),
+                      ),
+      
+                      Expanded(
+                        child: TextButton(onPressed: (){
+      
+                        },
+                            child: Text('all buses location', style: TextStyle(fontSize: 15 , color: Colors.green),)
+                        ),
+                      ),
+      
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      
       ),
-
     );
 
   }

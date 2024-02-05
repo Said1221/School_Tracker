@@ -23,19 +23,7 @@ class _parentsContactState extends State<parentsContact> {
           builder: (BuildContext context , AppState state){
           return Scaffold(
             appBar: AppBar(
-              title:  Text('Contact'),
-              flexibleSpace: Container(
-                decoration:  BoxDecoration(
-                    gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Color(0xFF3383CD),
-                          Color(0xFF11249F),
-                        ]
-                    )
-                ),
-              ),
+              title:  Text('Contact' , style: TextStyle(color: Colors.orange , fontWeight: FontWeight.bold),),
             ),
             body:  Padding(
               padding: EdgeInsets.all(8.0),

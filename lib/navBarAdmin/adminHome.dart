@@ -27,8 +27,8 @@ class adminHome extends StatelessWidget {
                             begin:Alignment.topRight,
                             end: Alignment.bottomLeft,
                             colors:[
-                              Color(0xFF3383CD),
-                              Color(0xFF11249F),
+                              Color(0xFFF16826),
+                              Color(0xFFC75833),
                             ]
                         )
                     )
@@ -36,61 +36,74 @@ class adminHome extends StatelessWidget {
               ),
               CircleAvatar(
                 backgroundColor: Colors.grey[300],
-                backgroundImage: const AssetImage('assets/user.png'),
+                backgroundImage: const AssetImage('assets/admin.png'),
                 radius: 40,
               ),
             ],
           ),
 
-          const SizedBox(
+          SizedBox(
             height: 50,
           ),
 
-          InkWell(
-            onTap: ()=>navigateTo(context, buses()),
-            child: Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(40),
-                  color: Colors.grey[300]
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: 50,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Image.asset('assets/bus.png',scale: 8,),
-                    const SizedBox(width: 5,),
-                    const Text('Buses'),
+                    InkWell(
+                      onTap: ()=>navigateTo(context, buses()),
+                      child: Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(40),
+                            color: Colors.grey[300]
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Image.asset('assets/bus.png',scale: 8,),
+                              const SizedBox(width: 5,),
+                              const Text('Buses'),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    InkWell(
+                      onTap: ()=>navigateTo(context,  drivers()),
+                      child: Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(40),
+                            color: Colors.grey[300]
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Image.asset('assets/driver.png',scale: 8,),
+                              const SizedBox(width: 5,),
+                              const Text('Drivers'),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
-              ),
+              ],
             ),
-          ),
-          const SizedBox(
-            height: 25,
           ),
 
-          InkWell(
-            onTap: ()=>navigateTo(context,  drivers()),
-            child: Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(40),
-                  color: Colors.grey[300]
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Image.asset('assets/driver.png',scale: 8,),
-                    const SizedBox(width: 5,),
-                    const Text('Drivers'),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(
+          SizedBox(
             height: 25,
           ),
 

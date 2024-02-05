@@ -30,7 +30,7 @@ class loginScreen extends StatelessWidget {
 
           if(state is loginSuccessState){
             Fluttertoast.showToast(
-              msg: 'success',
+              msg: 'successfully registered',
               timeInSecForIosWeb: 3,
               gravity: ToastGravity.BOTTOM,
               textColor: Colors.white,
@@ -51,7 +51,7 @@ class loginScreen extends StatelessWidget {
 
           if(state is loginErrorState){
             Fluttertoast.showToast(
-              msg: 'Invalid User',
+              msg: message,
               timeInSecForIosWeb: 3,
               gravity: ToastGravity.BOTTOM,
               textColor: Colors.white,
@@ -78,8 +78,8 @@ class loginScreen extends StatelessWidget {
                                 begin:Alignment.topRight,
                                 end: Alignment.bottomLeft,
                                 colors:[
-                                  Color(0xFF3383CD),
-                                  Color(0xFF11249F),
+                                  Color(0xFFF16826),
+                                  Color(0xFFC75833),
                                 ]
                             )
                         )
@@ -156,11 +156,12 @@ class loginScreen extends StatelessWidget {
 
                         Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Container(
+                          child: state is! loginSuccessState ?
+                          Container(
                             width: double.infinity,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20),
-                                color: Colors.grey
+                                color: Colors.white
                             ),
                             child: MaterialButton(onPressed: (){
                               visitor != 'driver' ? cubit.loginUser(
@@ -171,11 +172,13 @@ class loginScreen extends StatelessWidget {
                                   password: phoneController.text
                               );
                             },
-                              child: const Text("Login",style: TextStyle(color: Colors.white),),
+                              child: const Text("Login",style: TextStyle(color: Colors.black),),
                             ),
-                          ),
+                          ) :
+                              Center(child: CircularProgressIndicator(color: Colors.orange,))
                         ),
 
+                        visitor !='driver'?
                         Center(
                           child: TextButton(onPressed: (){
                             if(visitor=='admin'){
@@ -194,7 +197,8 @@ class loginScreen extends StatelessWidget {
                               ),
                             ),
                           ),
-                        ),
+                        ):
+                            Text(''),
                       ],
                     ),
                   ),

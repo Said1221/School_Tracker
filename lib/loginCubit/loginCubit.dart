@@ -24,6 +24,7 @@ class LoginCubit extends Cubit<LoginState>{
       print(ID);
       CacheHelper.saveData(key: 'ID', value: ID);
     }).catchError((error){
+      message = error.toString();
       emit(loginErrorState());
       print(error.toString());
     });

@@ -24,6 +24,7 @@ class RegCubit extends Cubit<RegState>{
       email: email,
       password: password,
     ).then((value){
+      emit(regAdminCreatUserSuccessState());
       createAdmin(
           name: name,
           email: email,
@@ -33,6 +34,7 @@ class RegCubit extends Cubit<RegState>{
           UID: value.user!.uid,
       );
     }).catchError((error){
+      message2 = error.toString();
       emit(regAdminErrorState());
     });
   }
@@ -57,10 +59,11 @@ class RegCubit extends Cubit<RegState>{
 
     FirebaseFirestore.instance.collection('users').doc(UID).set(model.toMap())
         .then((value){
-          emit(regAdminCreatUserSuccessState());
+          // emit(regAdminCreatUserSuccessState());
           print(UID);
           print('success');
         }).catchError((error){
+          message2 = error.toString();
           emit(regAdminCreatUserErrorState());
           print(error.toString());
     });
@@ -91,6 +94,7 @@ class RegCubit extends Cubit<RegState>{
           UID: value.user!.uid,
       );
     }).catchError((error){
+      message2 = error.toString();
       emit(regParentsErrorState());
       print(error.toString());
     });
@@ -128,12 +132,19 @@ class RegCubit extends Cubit<RegState>{
           });
 
           FirebaseFirestore.instance.collection('users').doc(ID2).
-          collection('parents').doc(UID).set(model.toMap());
+          collection('parents').doc(UID).set(model.toMap()).then((value){
+            emit(regParentsCreatUserSuccessState());
+          });
         }
-        else{
-          print('this school not found');
+        else if(element.data()['email'] != schoolEmail){
+          message2 = 'this school not found';
+          emit(regParentsCreatUserErrorState());
         }
+
       });
+    }).catchError((error){
+      message2 = error.toString();
+      emit(regParentsCreatUserErrorState());
     });
   }
 

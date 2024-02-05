@@ -23,8 +23,8 @@ class setting extends StatelessWidget {
                           begin:Alignment.topRight,
                           end: Alignment.bottomLeft,
                           colors:[
-                            Color(0xFF3383CD),
-                            Color(0xFF11249F),
+                            Color(0xFFF16826),
+                            Color(0xFFC75833),
                           ]
                       )
                   )

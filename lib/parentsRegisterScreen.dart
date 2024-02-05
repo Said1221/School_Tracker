@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:tracker/cache_helper.dart';
 import 'package:tracker/regCubit/regCubit.dart';
 import 'package:tracker/regCubit/regState.dart';
@@ -22,7 +23,32 @@ class parentsRegisterScreen extends StatelessWidget {
     return BlocProvider(
       create: (BuildContext)=>RegCubit(),
       child: BlocConsumer<RegCubit,RegState>(
-        listener: (BuildContext context, RegState state){},
+        listener: (BuildContext context, RegState state){
+          if(state is regParentsCreatUserSuccessState){
+            Fluttertoast.showToast(
+              msg: 'successfully registered',
+              timeInSecForIosWeb: 3,
+              gravity: ToastGravity.BOTTOM,
+              textColor: Colors.white,
+              toastLength: Toast.LENGTH_LONG,
+              fontSize: 16,
+              backgroundColor: Colors.green,
+            );
+            navigateTo(context, loginScreen());
+          }
+
+          if(state is regParentsErrorState || state is regParentsCreatUserErrorState){
+            Fluttertoast.showToast(
+              msg: message2,
+              timeInSecForIosWeb: 3,
+              gravity: ToastGravity.BOTTOM,
+              textColor: Colors.white,
+              toastLength: Toast.LENGTH_LONG,
+              fontSize: 16,
+              backgroundColor: Colors.red,
+            );
+          }
+        },
         builder: (BuildContext context, RegState state){
           RegCubit cubit = RegCubit.get(context);
           return SafeArea(
@@ -40,8 +66,8 @@ class parentsRegisterScreen extends StatelessWidget {
                                   begin:Alignment.topRight,
                                   end: Alignment.bottomLeft,
                                   colors:[
-                                    Color(0xFF3383CD),
-                                    Color(0xFF11249F),
+                                    Color(0xFFF16826),
+                                    Color(0xFFC75833),
                                   ]
                               )
                           )
@@ -158,11 +184,12 @@ class parentsRegisterScreen extends StatelessWidget {
 
                           Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Container(
+                            child: state is! regParentsCreatUserSuccessState ?
+                            Container(
                               width: double.infinity,
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(20),
-                                  color: Colors.grey
+                                  color: Colors.white
                               ),
                               child: MaterialButton(onPressed: (){
                                 cubit.parentsReg(
@@ -174,11 +201,11 @@ class parentsRegisterScreen extends StatelessWidget {
                                   latitude: CacheHelper.getData(key: 'latitude'),
                                   longitude: CacheHelper.getData(key: 'longitude'),
                                 );
-                                navigateTo(context, loginScreen());
                               },
-                                child: const Text("Register",style: TextStyle(color: Colors.white),),
+                                child: const Text("Register",style: TextStyle(color: Colors.black),),
                               ),
-                            ),
+                            ) :
+                                Center(child: CircularProgressIndicator(color: Colors.orange,))
                           ),
                           const SizedBox(
                             height: 50,

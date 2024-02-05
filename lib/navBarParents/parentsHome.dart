@@ -27,8 +27,8 @@ class parentsHome extends StatelessWidget {
                           begin: Alignment.topRight,
                           end: Alignment.bottomLeft,
                           colors: [
-                            Color(0xFF3383CD),
-                            Color(0xFF11249F),
+                            Color(0xFFF16826),
+                            Color(0xFFC75833),
                           ]
                       )
                   )
@@ -36,7 +36,7 @@ class parentsHome extends StatelessWidget {
             ),
             CircleAvatar(
               backgroundColor: Colors.grey[300],
-              backgroundImage: const AssetImage('assets/user.png'),
+              backgroundImage: AssetImage('assets/parents.png'),
               radius: 40,
             ),
           ],
@@ -44,6 +44,12 @@ class parentsHome extends StatelessWidget {
 
         const SizedBox(
           height: 150,
+        ),
+
+        Text('Follow the current location of your chgildren' , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 15),),
+
+        SizedBox(
+          height: 20,
         ),
 
         InkWell(

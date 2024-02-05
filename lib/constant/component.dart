@@ -3,6 +3,9 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:tracker/cache_helper.dart';
 
+var message;
+var message2;
+
 var ID;
 var ID2;
 

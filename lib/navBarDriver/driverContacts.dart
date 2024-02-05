@@ -26,19 +26,7 @@ class _driverContactState extends State<driverContact> {
           builder: (BuildContext context , AppState state){
           return Scaffold(
             appBar: AppBar(
-              title: const Text('Contact'),
-              flexibleSpace: Container(
-                decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Color(0xFF3383CD),
-                          Color(0xFF11249F),
-                        ]
-                    )
-                ),
-              ),
+              title: const Text('Contact' , style: TextStyle(color: Colors.orange , fontWeight: FontWeight.bold),),
             ),
             body: Padding(
               padding: EdgeInsets.all(8.0),

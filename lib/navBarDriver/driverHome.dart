@@ -27,16 +27,16 @@ class driverHome extends StatelessWidget {
                           begin: Alignment.topRight,
                           end: Alignment.bottomLeft,
                           colors: [
-                            Color(0xFF3383CD),
-                            Color(0xFF11249F),
+                            Color(0xFFF16826),
+                            Color(0xFFC75833),
                           ]
                       )
                   )
               ),
             ),
             CircleAvatar(
-              backgroundColor: Colors.grey[300],
-              backgroundImage: const AssetImage('assets/user.png'),
+              backgroundColor: Colors.deepPurple,
+              backgroundImage: const AssetImage('assets/driver.png'),
               radius: 40,
             ),
           ],
@@ -44,6 +44,13 @@ class driverHome extends StatelessWidget {
 
         const SizedBox(
           height: 150,
+        ),
+        
+        Text('Start your path by driving children home' , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 15),),
+
+
+        SizedBox(
+          height: 20,
         ),
 
         InkWell(

@@ -78,84 +78,72 @@ class _adminTrackState extends State<adminTrack> {
 
   @override
   Widget build(BuildContext context){
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Tracking'),
-        flexibleSpace: Container(
-          decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Color(0xFF3383CD),
-                    Color(0xFF11249F),
-                  ]
-              )
-          ),
-        ),
-      ),
-
-      body:
-      Stack(
-        children: [
-          GoogleMap(
-              initialCameraPosition: CameraPosition(target: sourceLocation , zoom: 10.5),
-              markers: {
-
-                Marker(
-                  markerId:MarkerId('source'),
-                  // icon: sourceIcon,
-                  position:sourceLocation,
-                ),
-
-                for(int x = long.length-1 ; x>=0 ; x--)
+    return SafeArea(
+      child: Scaffold(
+        
+      
+        body:
+        Stack(
+          children: [
+            GoogleMap(
+                initialCameraPosition: CameraPosition(target: sourceLocation , zoom: 10.5),
+                markers: {
+      
                   Marker(
-
-                    icon: destinationIcon,
-                    markerId:MarkerId('destination'),
-                    position:LatLng(lat[x] , long[x]),
+                    markerId:MarkerId('source'),
+                    // icon: sourceIcon,
+                    position:sourceLocation,
                   ),
-
-              },
-
-              onMapCreated: (mapController){
-                controller.complete(mapController);
-              }
-
-          ),
-
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                Text('<< Go To >>' , style: TextStyle(fontSize: 25 , fontWeight: FontWeight.bold),),
-
-                Row(
-                  children: [
-
-                    Expanded(
-                      child: TextButton(onPressed: (){
-                      },
-                          child: Text('Your school location' , style: TextStyle(fontSize: 15 , color: Colors.red),)
-                      ),
+      
+                  for(int x = long.length-1 ; x>=0 ; x--)
+                    Marker(
+      
+                      icon: destinationIcon,
+                      markerId:MarkerId('destination'),
+                      position:LatLng(lat[x] , long[x]),
                     ),
-
-                    Expanded(
-                      child: TextButton(onPressed: (){
-
-                      },
-                          child: Text('all buses location', style: TextStyle(fontSize: 15 , color: Colors.green),)
-                      ),
-                    ),
-
-                  ],
-                ),
-              ],
+      
+                },
+      
+                onMapCreated: (mapController){
+                  controller.complete(mapController);
+                }
+      
             ),
-          ),
-        ],
+      
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  Text('<< Go To >>' , style: TextStyle(fontSize: 25 , fontWeight: FontWeight.bold),),
+      
+                  Row(
+                    children: [
+      
+                      Expanded(
+                        child: TextButton(onPressed: (){
+                        },
+                            child: Text('Your school location' , style: TextStyle(fontSize: 15 , color: Colors.red),)
+                        ),
+                      ),
+      
+                      Expanded(
+                        child: TextButton(onPressed: (){
+      
+                        },
+                            child: Text('all buses location', style: TextStyle(fontSize: 15 , color: Colors.green),)
+                        ),
+                      ),
+      
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      
       ),
-
     );
 
   }

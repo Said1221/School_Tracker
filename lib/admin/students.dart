@@ -32,19 +32,8 @@ class _studentsState extends State<students> {
           builder: (BuildContext context , AppState state){
           AppCubit cubit = AppCubit.get(context);
           return Scaffold(
-            appBar: AppBar(title: const Text('Students'),
-              flexibleSpace: Container(
-                decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Color(0xFF3383CD),
-                          Color(0xFF11249F),
-                        ]
-                    )
-                ),
-              ),
+            appBar: AppBar(title: const Text('Students' , style: TextStyle(color: Colors.orange , fontWeight: FontWeight.bold),),
+              titleSpacing: 0,
             ),
 
             body: Padding(

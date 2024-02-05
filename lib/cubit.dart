@@ -2,10 +2,12 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tracker/cache_helper.dart';
 import 'package:tracker/constant/component.dart';
+import 'package:tracker/notification.dart';
 import 'package:tracker/state.dart';
 import 'navBarAdmin/adminContact.dart';
 import 'navBarAdmin/adminHome.dart';
@@ -237,6 +239,10 @@ class AppCubit extends Cubit<AppState>{
                                 driverEmail = element.data()['email'];
                                 driverPhone = element.data()['phone'];
 
+                                CacheHelper.saveData(key: 'driverId', value: element.data()['UID']);
+                                print(CacheHelper.getData(key: 'driverId'));
+
+
                                 print(driverName);
                                 print(driverEmail);
                                 print(driverPhone);
@@ -279,22 +285,21 @@ class AppCubit extends Cubit<AppState>{
     FirebaseFirestore.instance.collection('users')
         .get().then((value){
           value.docs.forEach((element){
-            ID = element.data()['UID'];
-            FirebaseFirestore.instance.collection('users').doc(ID).collection('DRIVER')
+            FirebaseFirestore.instance.collection('users').doc(element.data()['UID']).collection('DRIVER')
             .get().then((value){
+              ID = element.data()['UID'];
               value.docs.forEach((element){
                 if(element.data()['UID'] == CacheHelper.getData(key: 'ID')){
-                  FirebaseFirestore.instance.collection('users')
+                  FirebaseFirestore.instance.collection('users').doc(ID)
                       .get().then((value){
-                        value.docs.forEach((element){
-                          schoolName = element.data()['name'];
-                          schoolEmail = element.data()['email'];
-                          schoolPhone = element.data()['phone'];
-                          schoolLat = element.data()['latitude'];
-                          schoolLong = element.data()['longtude'];
+                          schoolName = value['name'];
+                          schoolEmail = value['email'];
+                          schoolPhone = value['phone'];
+                          schoolLat = value['latitude'];
+                          schoolLong = value['longtude'];
 
-                          busLat = element.data()['latitude'];
-                          busLong = element.data()['longtude'];
+                          busLat = value['latitude'];
+                          busLong = value['longtude'];
 
 
                           print(schoolName);
@@ -302,7 +307,7 @@ class AppCubit extends Cubit<AppState>{
                           print(schoolPhone);
                           print(schoolLat);
                           print(schoolLong);
-                        });
+
                   });
 
                   bus = element.data()['bus'];
@@ -334,6 +339,10 @@ class AppCubit extends Cubit<AppState>{
             });
           });
     });
+  }
+
+  Future<void>parentListn()async {
+
   }
 
   
