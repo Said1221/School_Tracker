@@ -21,11 +21,111 @@ class driverTrack extends StatefulWidget {
 }
 
 class _driverTrackState extends State<driverTrack> {
+
+  @override
+  Widget build(BuildContext context){
+    return SafeArea(
+      child: Scaffold(
+        body: Stack(
+          children: [
+            GoogleMap(
+                initialCameraPosition: CameraPosition(target: sourceLocation , zoom: 15),
+
+                polylines: {
+                  Polyline(
+                    polylineId: PolylineId('route'),
+                    points: polylineCoordinates,
+                    color: Colors.red,
+                    width: 6,
+                  ),
+                },
+
+
+                markers: {
+
+                  Marker(
+                    markerId:MarkerId('source'),
+                    // icon: sourceIcon,
+                    position:LatLng(sourceLocation.latitude , sourceLocation.longitude),
+                  ),
+
+                  Marker(
+                    markerId:MarkerId('bus'),
+                    icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet),
+                    position:LatLng(busLat , busLong),
+                  ),
+
+                  Marker(
+                    markerId:MarkerId('home'),
+                    icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
+                    position:LatLng(homeLocation.latitude , homeLocation.longitude),
+                  ),
+
+                },
+
+                onMapCreated: (mapController){
+                  controller.complete(mapController);
+                }
+
+            ),
+
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+
+                  Row(
+                    children: [
+                      Icon(Icons.location_on , color: Colors.red,),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text('school location' , style: TextStyle(fontSize: 15 , color: Colors.red),),
+                    ],
+                  ),
+
+                  Row(
+                    children: [
+                      Icon(Icons.location_on , color: Colors.deepPurple,),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text('bus position' , style: TextStyle(fontSize: 15 , color: Colors.red),),
+                    ],
+                  ),
+
+                  Row(
+                    children: [
+                      Icon(Icons.location_on , color: Colors.green,),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text('home location' , style: TextStyle(fontSize: 15 , color: Colors.red),),
+                    ],
+                  ),
+
+                    Container(
+                    child: Text('${placeDistance.toStringAsFixed(2)}'
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      
+      ),
+    );
+
+  }
+
+
+
+
   final Completer<GoogleMapController> controller = Completer();
 
-
   DatabaseReference ref =FirebaseDatabase.instance.ref(CacheHelper.getData(key: 'ID'));
-
 
   late GoogleMapController googleMapController;
   List<LatLng>polylineCoordinates = [];
@@ -34,20 +134,22 @@ class _driverTrackState extends State<driverTrack> {
   int? place;
 
 
-
   // var _placeDistance;
   static LatLng sourceLocation = LatLng(
-    schoolLat,
-    schoolLong
+      schoolLat,
+      schoolLong
   );
 
-  static LatLng busLocation = LatLng(
-      busLat,
-      busLong
+  // static LatLng busLocation = LatLng(
+  //     busLat,
+  //     busLong
+  // );
+
+
+  static LatLng homeLocation = LatLng(
+      contactLatitude[0],
+      contactLongtude[0]
   );
-
-
-  static LatLng homeLocation = LatLng(contactLatitude[0], contactLongtude[0]);
 
 
   void getPolyPoints()async{
@@ -55,7 +157,7 @@ class _driverTrackState extends State<driverTrack> {
 
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
       googleAPIKey,
-      PointLatLng(sourceLocation.latitude, sourceLocation.longitude),
+      PointLatLng(busLat, busLong),
 
 
       PointLatLng(homeLocation.latitude, homeLocation.longitude),
@@ -69,6 +171,27 @@ class _driverTrackState extends State<driverTrack> {
     }
 
   }
+
+
+  // void getPolyPoints2()async{
+  //   PolylinePoints polylinePoints = PolylinePoints();
+  //
+  //   PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
+  //     googleAPIKey,
+  //     PointLatLng(busLocation.latitude, busLocation.longitude),
+  //
+  //
+  //     PointLatLng(homeLocation.latitude, homeLocation.longitude),
+  //   );
+  //
+  //   if(result.points.isNotEmpty){
+  //     result.points.forEach((PointLatLng point)=>
+  //         polylineCoordinates.add(LatLng(point.latitude, point.longitude))
+  //     );
+  //     setState(() {});
+  //   }
+  //
+  // }
 
 
 
@@ -86,33 +209,39 @@ class _driverTrackState extends State<driverTrack> {
     Geolocator.getPositionStream().listen((Position position) {
       print(LatLng(position.latitude, position.longitude));
 
-      cal();
-      busLocation = LatLng(position.latitude, position.longitude);
+      setState(() {
+        busLat = position.latitude;
+        busLong = position.longitude;
+      });
+
+      cal(position.latitude , position.longitude);
+
+
 
       FirebaseFirestore.instance.collection('users').get().
-          then((value){
+      then((value){
+        value.docs.forEach((element){
+          FirebaseFirestore.instance.collection('users').doc(element.data()['UID'])
+              .collection('DRIVER').get().then((value){
+            uid = element.data()['UID'];
             value.docs.forEach((element){
-              FirebaseFirestore.instance.collection('users').doc(element.data()['UID'])
-                  .collection('DRIVER').get().then((value){
-                    uid = element.data()['UID'];
-                    value.docs.forEach((element){
-                      if(element.data()['UID'] == CacheHelper.getData(key: 'ID')){
-                        FirebaseFirestore.instance.collection('users').doc(uid)
-                            .collection('BUS').doc(element.data()['bus']).update(({
-                          'latitude' : position.latitude,
-                          'longtude' : position.longitude,
-                        }));
-                      }
-                    });
-              });
+              if(element.data()['UID'] == CacheHelper.getData(key: 'ID')){
+                FirebaseFirestore.instance.collection('users').doc(uid)
+                    .collection('BUS').doc(element.data()['bus']).update(({
+                  'latitude' : position.latitude,
+                  'longtude' : position.longitude,
+                }));
+              }
             });
+          });
+        });
       });
 
       googleMapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
           zoom: 20,
           target: LatLng(
-            busLocation.latitude,
-            busLocation.longitude
+              busLat,
+              busLong
           )
       )));
 
@@ -121,14 +250,15 @@ class _driverTrackState extends State<driverTrack> {
       });
     });
 
+
   }
 
 
 
-  void cal()async{
+  void cal(latitude , longtude)async{
     double distanceInMeters = await Geolocator.bearingBetween(
-      busLocation.latitude,
-      busLocation.longitude,
+      latitude,
+      longtude,
       homeLocation.latitude,
       homeLocation.longitude,
     );
@@ -158,9 +288,9 @@ class _driverTrackState extends State<driverTrack> {
 // Storing the calculated total distance of the route
     setState(() {
 //
-    placeDistance = totalDistance.toDouble();
-    ref.set(placeDistance.toInt());
-    print('DISTANCE: $placeDistance km');
+      placeDistance = totalDistance.toDouble();
+      ref.set(placeDistance.toInt());
+      print('DISTANCE: $placeDistance km');
     });
 
 
@@ -201,112 +331,10 @@ class _driverTrackState extends State<driverTrack> {
   void initState(){
     getLiveLocation();
     getPolyPoints();
+    // getPolyPoints2();
     super.initState();
   }
 
-  @override
-  Widget build(BuildContext context){
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Tracking'),
-        flexibleSpace: Container(
-          decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Color(0xFF3383CD),
-                    Color(0xFF11249F),
-                  ]
-              )
-          ),
-        ),
-      ),
-
-      body:
-      Stack(
-        children: [
-          GoogleMap(
-              initialCameraPosition: CameraPosition(target: sourceLocation , zoom: 15),
-
-              polylines: {
-                Polyline(
-                  polylineId: PolylineId('route'),
-                  points: polylineCoordinates,
-                  color: Colors.red,
-                  width: 6,
-                )
-              },
-
-
-              markers: {
-
-                Marker(
-                  markerId:MarkerId('source'),
-                  // icon: sourceIcon,
-                  position:sourceLocation,
-                ),
-
-                Marker(
-                  markerId:MarkerId('bus'),
-                  icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet),
-                  position:busLocation,
-                ),
-
-                Marker(
-                  markerId:MarkerId('home'),
-                  icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
-                  position:LatLng(homeLocation.latitude , homeLocation.longitude),
-                ),
-
-              },
-
-              onMapCreated: (mapController){
-                controller.complete(mapController);
-              }
-
-          ),
-
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                Text('<< Go To >>' , style: TextStyle(fontSize: 25 , fontWeight: FontWeight.bold),),
-
-                Row(
-                  children: [
-
-                    Expanded(
-                      child: TextButton(onPressed: (){
-
-                      },
-                          child: Text('Your school location' , style: TextStyle(fontSize: 15 , color: Colors.red),)
-                      ),
-                    ),
-
-                    Expanded(
-                      child: TextButton(onPressed: (){
-
-                      },
-                          child: Text('all buses location', style: TextStyle(fontSize: 15 , color: Colors.green),)
-                      ),
-                    ),
-
-                  ],
-                ),
-
-                  placeDistance > 0 ? Container(
-                  child: Text('${placeDistance.toStringAsFixed(2)}'),
-                ) : Text('you are arrived'),
-              ],
-            ),
-          ),
-        ],
-      ),
-
-    );
-
-  }
 
 
 }

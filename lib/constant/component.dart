@@ -3,6 +3,8 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:tracker/cache_helper.dart';
 
+late BuildContext context;
+
 var message;
 var message2;
 
@@ -20,6 +22,8 @@ var homeLocationLati , homeLocationLong;
 var schoolName , schoolEmail , schoolPhone , adminUID;
 var driverName , driverEmail , driverPhone;
 var studentName , studentAddress , studentPhone;
+
+var settingName , settingEmail , settingPhone;
 
 var schoolLat , schoolLong ;
 
@@ -97,14 +101,9 @@ Future<Position>getCurrentAddress()async{
     CacheHelper.saveData(key: 'latitude', value: value.latitude);
     CacheHelper.saveData(key: 'longitude', value: value.longitude);
 
-    List<Placemark> placemarks = await placemarkFromCoordinates(
-        CacheHelper.getData(key: 'latitude') ,
-      CacheHelper.getData(key: 'longitude') ,
-    );
-    city = placemarks[0].administrativeArea;
-
     return city;
 
   });
 
 }
+

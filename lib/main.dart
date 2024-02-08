@@ -89,30 +89,30 @@ void main() async{
 
   getCurrentAddress();
 
-  FlutterBackgroundService.initialize(onStart);
+  // FlutterBackgroundService.initialize(onStart);
 
   runApp(MyApp());
 }
 
-String? change;
-
-void onStart(){
-  WidgetsFlutterBinding.ensureInitialized();
-
-
-
-  ref.onValue.listen((event){
-
-
-    FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
-
-
-
-  });
-
-
-
-}
+// String? change;
+//
+// void onStart(){
+//   WidgetsFlutterBinding.ensureInitialized();
+//
+//
+//
+//   ref.onValue.listen((event){
+//
+//
+//     FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+//
+//
+//
+//   });
+//
+//
+//
+// }
 
 class MyApp extends StatelessWidget {
 
@@ -127,13 +127,13 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: driverLayout(),
+      home:
 
-      // CacheHelper.getData(key: 'ID') == null ? splash() :
-      //     CacheHelper.getData(key: 'visitor') == 'admin' ? adminLayout() :
-      //     CacheHelper.getData(key: 'visitor') == 'parents' ? parentLayout() :
-      //     CacheHelper.getData(key: 'visitor')== 'driver' ? driverLayout() :
-      //         null,
+      CacheHelper.getData(key: 'ID') == null ? splash() :
+          CacheHelper.getData(key: 'visitor') == 'admin' ? adminLayout() :
+          CacheHelper.getData(key: 'visitor') == 'parents' ? parentLayout() :
+          CacheHelper.getData(key: 'visitor')== 'driver' ? driverLayout() :
+              null,
       debugShowCheckedModeBanner: false,
     );
   }

@@ -1,5 +1,9 @@
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:tracker/cache_helper.dart';
+import 'package:tracker/constant/component.dart';
+import 'package:tracker/splash.dart';
 
 import '../constant/my_clipper.dart';
 
@@ -36,23 +40,27 @@ class setting extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const CircleAvatar(
+                  CircleAvatar(
                     radius: 40,
                     backgroundColor: Colors.white,
-                    backgroundImage: AssetImage('assets/user.png'),
+                    backgroundImage:
+                    CacheHelper.getData(key: 'visitor') == 'admin' ? AssetImage('assets/admin.png') :
+                    CacheHelper.getData(key: 'visitor') == 'parents' ? AssetImage('assets/parents.png') :
+                    CacheHelper.getData(key: 'visitor') == 'driver' ? AssetImage('assets/driver.png') :
+                    null
                   ),
                   const SizedBox(
                     height: 10,
                   ),
-                  const Text('Ahmed Mohamed' , style: TextStyle(fontSize:30 ,color: Colors.white),),
+                  Text(settingName , style: TextStyle(fontSize:30 ,color: Colors.white),),
                   const SizedBox(
                     height: 10,
                   ),
-                  const Text('said@gmail.com' , style: TextStyle(fontSize:15 , color: Colors.white),),
+                  Text(settingEmail, style: TextStyle(fontSize:15 , color: Colors.white),),
                   const SizedBox(
                     height: 10,
                   ),
-                  const Text('01002819302' , style: TextStyle(fontSize:15 , color: Colors.white),),
+                  Text(settingPhone , style: TextStyle(fontSize:15 , color: Colors.white),),
                   const SizedBox(
                     height: 20,
                   ),
@@ -61,7 +69,19 @@ class setting extends StatelessWidget {
                         borderRadius: BorderRadius.circular(20),
                         color: Colors.red
                     ),
-                    child: MaterialButton(onPressed: (){},
+                    child: MaterialButton(onPressed: (){
+                      CacheHelper.removeData(key: 'ID');
+                        Fluttertoast.showToast(
+                          msg: 'You have successfully logged out',
+                          timeInSecForIosWeb: 3,
+                          gravity: ToastGravity.BOTTOM,
+                          textColor: Colors.white,
+                          toastLength: Toast.LENGTH_LONG,
+                          fontSize: 16,
+                          backgroundColor: Colors.red,
+                        );
+                        navigateTo(context, splash());
+                    },
                     child: const Text('Logout' , style: TextStyle(fontSize:15 , color: Colors.white),),
                     ),
                   ),

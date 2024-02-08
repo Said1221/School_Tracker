@@ -49,26 +49,32 @@ class _driversState extends State<drivers> {
                       CircleAvatar(
                         radius: 40,
                         backgroundColor: Colors.grey[300],
-                        backgroundImage: const AssetImage('assets/user.png'),
+                        backgroundImage: const AssetImage('assets/driver.png'),
                       ),
-                      const SizedBox(
+                      SizedBox(
                         width: 10,
                       ),
                       Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Row(
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
                               children: [
-                                Expanded(child: Text(driverDetails[index]['name'])),
+                                Text(driverDetails[index]['name']),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Text(driverDetails[index]['phone'] , style: TextStyle(color: Colors.grey),)
+                              ],
+                            ),
+                            Column(
+                              children: [
+                                Image.asset('assets/bus.png' , scale: 20,),
                                 Text(driverDetails[index]['bus'] , style: TextStyle(color: Colors.green),),
                               ],
                             ),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            Text(driverDetails[index]['phone'] , style: TextStyle(color: Colors.grey),)
                           ],
                         ),
                       ),

@@ -192,6 +192,10 @@ class AppCubit extends Cubit<AppState>{
               parentContact = element.data()['schoolEmail'];
               parentContact2 = element.data()['phone'];
 
+              settingName = element.data()['name'];
+              settingEmail = element.data()['email'];
+              settingPhone = element.data()['phone'];
+
 
 
               FirebaseFirestore.instance.collection('users').get()
@@ -290,6 +294,9 @@ class AppCubit extends Cubit<AppState>{
               ID = element.data()['UID'];
               value.docs.forEach((element){
                 if(element.data()['UID'] == CacheHelper.getData(key: 'ID')){
+                  settingName = element.data()['name'];
+                  settingEmail = element.data()['email'];
+                  settingPhone = element.data()['phone'];
                   FirebaseFirestore.instance.collection('users').doc(ID)
                       .get().then((value){
                           schoolName = value['name'];

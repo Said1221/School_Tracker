@@ -49,7 +49,7 @@ class _studentsState extends State<students> {
                         CircleAvatar(
                           radius: 40,
                           backgroundColor: Colors.grey[300],
-                          backgroundImage: const AssetImage('assets/user.png'),
+                          backgroundImage: const AssetImage('assets/students.png'),
                         ),
                         const SizedBox(
                           width: 10,
@@ -62,7 +62,13 @@ class _studentsState extends State<students> {
                               Row(
                                 children: [
                                   Expanded(child: Text(studentDetails[index]['name'])),
-                                  Text(studentDetails[index]['studentClass'] , style: TextStyle(color: Colors.green),),
+                                  Stack(
+                                    alignment: Alignment.topCenter,
+                                    children: [
+                                      Image.asset('assets/blackboard.png' , scale: 15,),
+                                      Text(studentDetails[index]['studentClass'] , style: TextStyle(color: Colors.white),),
+                                    ],
+                                  ),
                                 ],
                               ),
                               SizedBox(

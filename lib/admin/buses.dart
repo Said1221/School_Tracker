@@ -31,18 +31,19 @@ class _busesState extends State<buses> {
               padding: const EdgeInsets.all(8.0),
 
               child: state is AppGetBusSuccessState ?
-              ListView.separated(
-
-                  itemBuilder: (context , index)=>Card(
-                    elevation: 5,
+              GridView.count(crossAxisCount: 2,
+                children: List.generate(busNumbers.length, (index) => Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Card(
+                    elevation: 2,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Row(
+                      child: Column(
                         children: [
                           CircleAvatar(
-                            radius: 40,
+                            radius: 50,
                             backgroundColor: Colors.grey[300],
-                            backgroundImage: const AssetImage('assets/user.png'),
+                            backgroundImage: AssetImage('assets/bus.png'),
                           ),
                           SizedBox(
                             width: 10,
@@ -52,9 +53,8 @@ class _busesState extends State<buses> {
                               children: [
                                 Expanded(child: Text(busNumbers[index]['busNum'])),
                                 IconButton(onPressed: (){
-
                                 },
-                                    icon: Image.asset('assets/tracking.png', color: Colors.red,scale: 20,)
+                                    icon: Image.asset('assets/tracking.png', color: Colors.green,scale: 20,)
                                 ),
                               ],
                             ),
@@ -63,8 +63,8 @@ class _busesState extends State<buses> {
                       ),
                     ),
                   ),
-                  separatorBuilder: (context , index)=>myDivider(),
-                  itemCount: busNumbers.length
+                ),
+                ),
               ) :
                   Center(child: CircularProgressIndicator(color: Colors.blue,)),
             ),

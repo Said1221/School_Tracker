@@ -35,35 +35,36 @@ class _parentsContactState extends State<parentsContact> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children:
                   [
-                    SizedBox(
-                      width: double.infinity,
-                      child: Card(
-                        elevation: 10,
-                        child: Padding(
-                          padding: EdgeInsets.all(15.0),
-                          child: Column(
-                            children: [
-                              CircleAvatar(
-                                backgroundColor: Colors.white,
-                                backgroundImage: AssetImage('assets/user.png'),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Text(schoolName.toString() , style: TextStyle(fontSize: 20),),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Text(schoolEmail.toString()),
-                              Text(schoolPhone , style: TextStyle(color: Colors.grey),),
-                            ],
-                          ),
+
+                    Text('School details' , style: TextStyle(fontSize: 20 , fontWeight: FontWeight.bold),),
+                    Card(
+                      elevation: 10,
+                      child: Padding(
+                        padding: EdgeInsets.all(15.0),
+                        child: Column(
+                          children: [
+                            CircleAvatar(
+                              backgroundColor: Colors.white,
+                              backgroundImage: AssetImage('assets/admin.png'),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text(schoolName.toString() , style: TextStyle(fontSize: 20),),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text(schoolEmail.toString()),
+                            Text(schoolPhone , style: TextStyle(color: Colors.grey),),
+                          ],
                         ),
                       ),
                     ),
                     SizedBox(
                       height: 10,
                     ),
+
+                    Text('your children\'s driver' , style: TextStyle(fontSize: 20 , fontWeight: FontWeight.bold),),
                     SizedBox(
                       width: double.infinity,
                       child: Card(
@@ -74,7 +75,7 @@ class _parentsContactState extends State<parentsContact> {
                             children: [
                               CircleAvatar(
                                 backgroundColor: Colors.white,
-                                backgroundImage: AssetImage('assets/user.png'),
+                                backgroundImage: AssetImage('assets/driver.png'),
                               ),
                               SizedBox(
                                 height: 10,
@@ -95,6 +96,7 @@ class _parentsContactState extends State<parentsContact> {
                       height: 10,
                     ),
 
+                    Text('your childrens' , style: TextStyle(fontSize: 20 , fontWeight: FontWeight.bold),),
                     Expanded(
                       child: ListView.separated(
                         itemBuilder: (context , index)=>Card(
@@ -105,7 +107,7 @@ class _parentsContactState extends State<parentsContact> {
                               children: [
                                 CircleAvatar(
                                   backgroundColor: Colors.white,
-                                  backgroundImage: AssetImage('assets/user.png'),
+                                  backgroundImage: AssetImage('assets/students.png'),
                                 ),
                                 SizedBox(
                                   height: 10,
