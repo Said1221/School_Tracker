@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:tracker/constant/component.dart';
 import 'package:tracker/cubit.dart';
 
@@ -25,9 +26,35 @@ class _driversState extends State<drivers> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (BuildContext)=>AppCubit()..getDriver(),
+      create: (BuildContext)=>AppCubit(),
       child: BlocConsumer<AppCubit , AppState>(
-        listener: (BuildContext context , AppState state){},
+        listener: (BuildContext context , AppState state){
+
+          if(state is AppGetDriverSuccessState){
+            Fluttertoast.showToast(
+              msg: 'driver added successfully',
+              timeInSecForIosWeb: 3,
+              gravity: ToastGravity.BOTTOM,
+              textColor: Colors.white,
+              toastLength: Toast.LENGTH_LONG,
+              fontSize: 16,
+              backgroundColor: Colors.green,
+            );
+          }
+
+          if(state is AppGetDriverErrorState){
+            Fluttertoast.showToast(
+              msg: message,
+              timeInSecForIosWeb: 3,
+              gravity: ToastGravity.BOTTOM,
+              textColor: Colors.white,
+              toastLength: Toast.LENGTH_LONG,
+              fontSize: 16,
+              backgroundColor: Colors.red,
+            );
+          }
+
+        },
           builder: (BuildContext context , AppState state){
           AppCubit cubit = AppCubit.get(context);
           return Scaffold(
@@ -38,7 +65,7 @@ class _driversState extends State<drivers> {
 
             body: Padding(
               padding:  EdgeInsets.all(8.0),
-              child: state is AppGetDriverSuccessState ?
+              child: state is! AppGetDataInitialState ?
               ListView.separated(
               itemBuilder: (context , index)=>Card(
                 elevation: 5,
@@ -209,6 +236,7 @@ class _driversState extends State<drivers> {
                       address: driverAddressController.text,
                       bus: bus.toString(),
                     );
+
                   }
                   , child: const Text('save'))
                 ],

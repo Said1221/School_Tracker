@@ -20,6 +20,7 @@ class RegCubit extends Cubit<RegState>{
     required double latitude,
     required double longitude,
 }){
+    emit(regAdminInitialState());
     FirebaseAuth.instance.createUserWithEmailAndPassword(
       email: email,
       password: password,
@@ -80,6 +81,7 @@ class RegCubit extends Cubit<RegState>{
     required double latitude,
     required double longitude,
 }){
+    emit(regParentsInitialState());
     FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
         password: password
@@ -124,6 +126,7 @@ class RegCubit extends Cubit<RegState>{
       value.docs.forEach((element){
         if (element.data()['email'] == schoolEmail){
           ID2 = element.data()['UID'];
+          print(value);
           
           FirebaseFirestore.instance.collection('users').doc(ID2)
           .collection('STUDENT').doc(phone).update({
@@ -136,11 +139,6 @@ class RegCubit extends Cubit<RegState>{
             emit(regParentsCreatUserSuccessState());
           });
         }
-        else if(element.data()['email'] != schoolEmail){
-          message2 = 'this school not found';
-          emit(regParentsCreatUserErrorState());
-        }
-
       });
     }).catchError((error){
       message2 = error.toString();

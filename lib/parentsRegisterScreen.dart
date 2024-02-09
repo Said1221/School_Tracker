@@ -184,7 +184,7 @@ class parentsRegisterScreen extends StatelessWidget {
 
                           Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: state is! regParentsCreatUserSuccessState ?
+                            child: state is! regParentsInitialState ?
                             Container(
                               width: double.infinity,
                               decoration: BoxDecoration(

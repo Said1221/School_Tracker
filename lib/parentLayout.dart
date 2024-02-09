@@ -10,7 +10,7 @@ class parentLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (BuildContext)=>AppCubit(),
+      create: (BuildContext)=>AppCubit()..getParentsContact(),
       child: BlocConsumer<AppCubit , AppState>(
         listener: (BuildContext context , AppState state){},
         builder: (BuildContext context , AppState state){

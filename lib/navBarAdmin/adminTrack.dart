@@ -115,26 +115,33 @@ class _adminTrackState extends State<adminTrack> {
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 children: [
-                  Text('<< Go To >>' , style: TextStyle(fontSize: 25 , fontWeight: FontWeight.bold),),
-      
                   Row(
                     children: [
-      
-                      Expanded(
-                        child: TextButton(onPressed: (){
-                        },
-                            child: Text('Your school location' , style: TextStyle(fontSize: 15 , color: Colors.red),)
-                        ),
+                      Icon(Icons.location_on , color: Colors.red,),
+                      SizedBox(
+                        width: 5,
                       ),
-      
-                      Expanded(
-                        child: TextButton(onPressed: (){
-      
-                        },
-                            child: Text('all buses location', style: TextStyle(fontSize: 15 , color: Colors.green),)
-                        ),
+                      Text('school location' , style: TextStyle(fontSize: 15 , color: Colors.red),),
+                    ],
+                  ),
+
+                  Row(
+                    children: [
+                      Icon(Icons.location_on , color: Colors.deepPurple,),
+                      SizedBox(
+                        width: 5,
                       ),
-      
+                      Text('bus position' , style: TextStyle(fontSize: 15 , color: Colors.red),),
+                    ],
+                  ),
+
+                  Row(
+                    children: [
+                      Icon(Icons.location_on , color: Colors.green,),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text('home location' , style: TextStyle(fontSize: 15 , color: Colors.red),),
                     ],
                   ),
                 ],

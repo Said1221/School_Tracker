@@ -17,7 +17,7 @@ class _parentsContactState extends State<parentsContact> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (BuildContext)=>AppCubit()..getParentsContact(),
+      create: (BuildContext)=>AppCubit(),
       child: BlocConsumer<AppCubit , AppState>(
         listener: (BuildContext context , AppState state){},
           builder: (BuildContext context , AppState state){
@@ -29,7 +29,7 @@ class _parentsContactState extends State<parentsContact> {
               padding: EdgeInsets.all(8.0),
               child: SizedBox(
                 width: double.infinity,
-                child: state is AppGetParentsContactSuccessState ?
+                child: state is! AppGetDataInitialState ?
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,

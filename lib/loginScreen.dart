@@ -156,7 +156,7 @@ class loginScreen extends StatelessWidget {
 
                         Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: state is! loginSuccessState ?
+                          child: state is! loginUserInitialState ?
                           Container(
                             width: double.infinity,
                             decoration: BoxDecoration(

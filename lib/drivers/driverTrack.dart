@@ -212,9 +212,10 @@ class _driverTrackState extends State<driverTrack> {
       setState(() {
         busLat = position.latitude;
         busLong = position.longitude;
+        cal(busLat, busLong);
       });
 
-      cal(position.latitude , position.longitude);
+      // cal(position.latitude , position.longitude);
 
 
 

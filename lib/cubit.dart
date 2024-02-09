@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tracker/cache_helper.dart';
 import 'package:tracker/constant/component.dart';
 import 'package:tracker/notification.dart';
+import 'package:tracker/regCubit/regAdminModel.dart';
 import 'package:tracker/state.dart';
 import 'navBarAdmin/adminContact.dart';
 import 'navBarAdmin/adminHome.dart';
@@ -27,6 +28,7 @@ class AppCubit extends Cubit<AppState>{
   static AppCubit get(context)=>BlocProvider.of(context);
 
   int currentIndex = 0;
+
 
   List<Widget>screens = [
      adminHome(),
@@ -67,15 +69,30 @@ class AppCubit extends Cubit<AppState>{
         'latitude' : schoolLat,
         'longtude' : schoolLong,
           }).then((value){
-        print('added');
+            getBus();
+            emit(AppGetBusSuccessState());
       }).catchError((error){
-        print('error');
+        message = error.toString();
+        emit(AppGetBusErrorState());
       });
 
+    }).catchError((error){
+      message = error.toString();
+      emit(AppGetBusErrorState());
+    });
+  }
+
+  void getAdminData(){
+    FirebaseFirestore.instance.collection('users').doc(CacheHelper.getData(key: 'ID'))
+        .get().then((value){
+          settingName = value['name'];
+          settingEmail = value['email'];
+          settingPhone = value['phone'];
     });
   }
 
   void getBus(){
+    emit(AppGetDataInitialState());
     lat.clear();
     long.clear();
     busNumbers.clear();
@@ -93,7 +110,8 @@ class AppCubit extends Cubit<AppState>{
           });
           emit(AppGetBusSuccessState());
     }).catchError((error){
-      print(error.toString());
+      message = error.toString();
+      emit(AppGetBusErrorState());
     });
   }
 
@@ -105,7 +123,6 @@ class AppCubit extends Cubit<AppState>{
     required String address,
     required String bus,
   }){
-
       FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
         password: phone,
@@ -118,15 +135,22 @@ class AppCubit extends Cubit<AppState>{
           'address' : address,
           'bus' : bus,
           'UID' : value.user?.uid,
+        }).then((value){
+          getDriver();
+          emit(AppGetDriverSuccessState());
         }).catchError((error){
           print(error.toString());
         });
+      }).catchError((error){
+        message = error.toString();
+        emit(AppGetDriverErrorState());
       });
 
 
   }
 
   void getDriver(){
+    emit(AppGetDataInitialState());
     driverDetails.clear();
     FirebaseFirestore.instance.collection('users').doc(CacheHelper.getData(key: 'ID'))
         .collection('DRIVER').get().then((value){
@@ -147,24 +171,33 @@ class AppCubit extends Cubit<AppState>{
     required String studentClass,
     required String busNum,
   }){
-    FirebaseFirestore.instance.collection('users').doc(CacheHelper.getData(key: 'ID'))
-        .collection('STUDENT').doc(parentsPhone).set({
-      'name' : name,
-      'address' : address,
-      'parentsPhone' : parentsPhone,
-      'studentClass' : studentClass,
-      'bus' : busNum,
-      'latitude' : 0,
-      'longitude' : 0,
-        })
-        .then((value){
-      print('added');
-    }).catchError((error){
-      print('error');
-    });
+    if(parentsPhone != ''){
+      FirebaseFirestore.instance.collection('users').doc(CacheHelper.getData(key: 'ID'))
+          .collection('STUDENT').doc(parentsPhone).set({
+        'name' : name,
+        'address' : address,
+        'parentsPhone' : parentsPhone,
+        'studentClass' : studentClass,
+        'bus' : busNum,
+        'latitude' : 0,
+        'longitude' : 0,
+      })
+          .then((value){
+        getStudent();
+        emit(AppGetStudentSuccessState());
+      }).catchError((error){
+        message = error.toString();
+        emit(AppGetStudentErrorState());
+      });
+    }
+    if(parentsPhone == ''){
+      message = 'parents phone must be not empty';
+      emit(AppGetStudentErrorState());
+    }
   }
 
   void getStudent(){
+    emit(AppGetDataInitialState());
     studentDetails.clear();
     FirebaseFirestore.instance.collection('users').doc(CacheHelper.getData(key: 'ID'))
         .collection('STUDENT').get().then((value){
@@ -173,11 +206,13 @@ class AppCubit extends Cubit<AppState>{
       });
       emit(AppGetStudentSuccessState());
     }).catchError((error){
-      print(error.toString());
+      message = error.toString();
+      emit(AppGetStudentErrorState());
     });
   }
 
   void getParentsContact(){
+    emit(AppGetDataInitialState());
 
     contactsName.clear();
     contactsClass.clear();
@@ -263,7 +298,7 @@ class AppCubit extends Cubit<AppState>{
               });
             }
           });
-
+          emit(AppGetParentsContactSuccessState());
         }).catchError((error){
           print(error.toString());
           emit(AppGetParentsContactErrorState());

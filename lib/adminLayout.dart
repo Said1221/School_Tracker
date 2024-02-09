@@ -6,13 +6,18 @@ import 'package:tracker/state.dart';
 import 'cubit.dart';
 
 
-class adminLayout extends StatelessWidget {
+class adminLayout extends StatefulWidget {
 
 
   @override
+  State<adminLayout> createState() => _adminLayoutState();
+}
+
+class _adminLayoutState extends State<adminLayout> {
+  @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (BuildContext)=>AppCubit(),
+      create: (BuildContext)=>AppCubit()..getAdminData()..getBus()..getDriver()..getStudent(),
       child: BlocConsumer<AppCubit , AppState>(
         listener: (BuildContext context , AppState state){},
           builder: (BuildContext context , AppState state){

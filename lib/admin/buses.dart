@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:tracker/constant/component.dart';
 import 'package:tracker/cubit.dart';
 import 'package:tracker/state.dart';
@@ -17,9 +18,35 @@ class _busesState extends State<buses> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (BuildContext)=>AppCubit()..getBus(),
+      create: (BuildContext)=>AppCubit(),
       child: BlocConsumer<AppCubit , AppState>(
-        listener: (BuildContext context , AppState state){},
+        listener: (BuildContext context , AppState state){
+
+          if(state is AppGetBusSuccessState){
+            Fluttertoast.showToast(
+              msg: 'bus added successfully',
+              timeInSecForIosWeb: 3,
+              gravity: ToastGravity.BOTTOM,
+              textColor: Colors.white,
+              toastLength: Toast.LENGTH_LONG,
+              fontSize: 16,
+              backgroundColor: Colors.green,
+            );
+          }
+
+          if(state is AppGetBusErrorState){
+            Fluttertoast.showToast(
+              msg: 'bus number must be not empty',
+              timeInSecForIosWeb: 3,
+              gravity: ToastGravity.BOTTOM,
+              textColor: Colors.white,
+              toastLength: Toast.LENGTH_LONG,
+              fontSize: 16,
+              backgroundColor: Colors.red,
+            );
+          }
+
+        },
           builder: (BuildContext context , AppState state){
           AppCubit cubit = AppCubit.get(context);
           return Scaffold(
@@ -30,7 +57,7 @@ class _busesState extends State<buses> {
             body: Padding(
               padding: const EdgeInsets.all(8.0),
 
-              child: state is AppGetBusSuccessState ?
+              child: state is! AppGetDataInitialState ?
               GridView.count(crossAxisCount: 2,
                 children: List.generate(busNumbers.length, (index) => Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -73,7 +100,7 @@ class _busesState extends State<buses> {
 
               AlertDialog alert = AlertDialog(
                 scrollable: true,
-                title: const Text('add new driver'),
+                title: const Text('add new bus'),
                 content: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -104,11 +131,8 @@ class _busesState extends State<buses> {
                     cubit.addBus(
                         busNum: busNumberController.text,
                     );
-                    setState(() {
-                      cubit.getBus();
-                    });
-                    Navigator.pop(context);
-                  }, child: const Text('save'))
+
+                  }, child: Text('save'))
                 ],
               );
 

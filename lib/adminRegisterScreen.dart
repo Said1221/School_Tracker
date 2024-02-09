@@ -164,7 +164,7 @@ class adminRegisterScreen extends StatelessWidget {
 
                           Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: state is! regAdminCreatUserSuccessState ?
+                            child: state is! regAdminInitialState ?
                             Container(
                               width: double.infinity,
                               decoration: BoxDecoration(

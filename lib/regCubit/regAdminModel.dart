@@ -15,12 +15,10 @@ class regAdminModel{
     required this.UID,
 });
 
-  // regModel.fromJson(Map<String,dynamic>json){
+  // regAdminModel.fromJson(Map<String,dynamic>json){
   //   name = json['name'];
   //   email = json['email'];
   //   phone = json['phone'];
-  //   location = json['location'];
-  //   UID = json['UID'];
   // }
 
   Map<String , dynamic>toMap(){

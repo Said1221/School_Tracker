@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:tracker/constant/component.dart';
 import 'package:tracker/cubit.dart';
 
@@ -26,9 +27,35 @@ class _studentsState extends State<students> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (BuildContext)=>AppCubit()..getStudent(),
+      create: (BuildContext)=>AppCubit(),
       child: BlocConsumer<AppCubit , AppState>(
-        listener: (BuildContext context , AppState state){},
+        listener: (BuildContext context , AppState state){
+
+          if(state is AppGetStudentSuccessState){
+            Fluttertoast.showToast(
+              msg: 'student added successfully',
+              timeInSecForIosWeb: 3,
+              gravity: ToastGravity.BOTTOM,
+              textColor: Colors.white,
+              toastLength: Toast.LENGTH_LONG,
+              fontSize: 16,
+              backgroundColor: Colors.green,
+            );
+          }
+
+          if(state is AppGetStudentErrorState){
+            Fluttertoast.showToast(
+              msg: message,
+              timeInSecForIosWeb: 3,
+              gravity: ToastGravity.BOTTOM,
+              textColor: Colors.white,
+              toastLength: Toast.LENGTH_LONG,
+              fontSize: 16,
+              backgroundColor: Colors.red,
+            );
+          }
+
+        },
           builder: (BuildContext context , AppState state){
           AppCubit cubit = AppCubit.get(context);
           return Scaffold(
@@ -38,7 +65,7 @@ class _studentsState extends State<students> {
 
             body: Padding(
               padding: EdgeInsets.all(8.0),
-              child: state is AppGetStudentSuccessState ?
+              child: state is! AppGetDataInitialState ?
               ListView.separated(
                 itemBuilder: (Context , index)=>Card(
                   elevation: 5,

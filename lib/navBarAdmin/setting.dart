@@ -6,6 +6,7 @@ import 'package:tracker/constant/component.dart';
 import 'package:tracker/splash.dart';
 
 import '../constant/my_clipper.dart';
+import '../regCubit/regAdminModel.dart';
 
 class setting extends StatelessWidget {
 
