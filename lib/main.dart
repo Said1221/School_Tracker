@@ -23,10 +23,9 @@ DatabaseReference ref = FirebaseDatabase.instance.ref('aDYbtciai3XJS8NgKezvFN1Si
 
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   NotificationService().showNotification(
-      title:'arrived',
-      body: 'your child is arrived'
+      title:'School Tracker',
+      body: 'Your children have arrived'
   );
-  Fluttertoast.showToast(msg: 'on background');
 }
 
 
@@ -48,19 +47,19 @@ void main() async{
   var token = await FirebaseMessaging.instance.getToken();
   print(token);
 
-  // FirebaseMessaging.onMessage.listen((event){
-  //   print('on message');
-  //   print(event.data.toString());
+  FirebaseMessaging.onMessage.listen((event){
+    print('on message');
+    print(event.data.toString());
+
+    Fluttertoast.showToast(msg: 'on message');
+  });
   //
-  //   Fluttertoast.showToast(msg: 'on message');
-  // });
-  //
-  // FirebaseMessaging.onMessageOpenedApp.listen((event){
-  //   print('on message open app');
-  //   print(event.data.toString());
-  //
-  //   Fluttertoast.showToast(msg: 'on message open app');
-  // });
+  FirebaseMessaging.onMessageOpenedApp.listen((event){
+    NotificationService().showNotification(
+        title:'School Tracker',
+        body: 'Your children have arrived'
+    );
+  });
 
   await NotificationService().initNotification();
 
@@ -75,12 +74,12 @@ void main() async{
   ref.onValue.listen((event){
 
 
-    dioHelper.postFCM(
-        url: 'send',
-        data: {
-          'to' : 'eufC7hwTR824Kd_yYxLONa:APA91bHAQH0cd_hiMoa1CeR_BL1zSL755t86wi2ZjxH_cxU2plxAHQCr_Z3DU6sS0L9CFbgyTylxBWe4sPhD5wXHPeujvjSur1Czgnu687pm3oB-Y6LDm5cJBHl3t-yTUKqpqPtKRKl8'
-        }
-    );
+    // dioHelper.postFCM(
+    //     url: 'send',
+    //     data: {
+    //       'to' : 'eufC7hwTR824Kd_yYxLONa:APA91bHAQH0cd_hiMoa1CeR_BL1zSL755t86wi2ZjxH_cxU2plxAHQCr_Z3DU6sS0L9CFbgyTylxBWe4sPhD5wXHPeujvjSur1Czgnu687pm3oB-Y6LDm5cJBHl3t-yTUKqpqPtKRKl8'
+    //     }
+    // );
   });
 
 

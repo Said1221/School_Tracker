@@ -285,7 +285,6 @@ class AppCubit extends Cubit<AppState>{
                                 print(driverName);
                                 print(driverEmail);
                                 print(driverPhone);
-                                emit(AppGetParentsContactSuccessState());
                               }
                             });
                           });
@@ -383,9 +382,6 @@ class AppCubit extends Cubit<AppState>{
     });
   }
 
-  Future<void>parentListn()async {
-
-  }
 
   
 }

@@ -121,17 +121,7 @@ class _adminTrackState extends State<adminTrack> {
                       SizedBox(
                         width: 5,
                       ),
-                      Text('school location' , style: TextStyle(fontSize: 15 , color: Colors.red),),
-                    ],
-                  ),
-
-                  Row(
-                    children: [
-                      Icon(Icons.location_on , color: Colors.deepPurple,),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Text('bus position' , style: TextStyle(fontSize: 15 , color: Colors.red),),
+                      Text('your school location' , style: TextStyle(fontSize: 15 , color: Colors.red),),
                     ],
                   ),
 
@@ -141,9 +131,10 @@ class _adminTrackState extends State<adminTrack> {
                       SizedBox(
                         width: 5,
                       ),
-                      Text('home location' , style: TextStyle(fontSize: 15 , color: Colors.red),),
+                      Text('bus locations' , style: TextStyle(fontSize: 15 , color: Colors.red),),
                     ],
                   ),
+
                 ],
               ),
             ),

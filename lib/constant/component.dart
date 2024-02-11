@@ -45,6 +45,9 @@ List<dynamic>contactsName = [];
 List<dynamic>contactsAddress = [];
 List<dynamic>contactsPhone = [];
 List<dynamic>contactsClass = [];
+
+
+int x = 0;
 List<dynamic>contactLatitude = [];
 List<dynamic>contactLongtude = [];
 

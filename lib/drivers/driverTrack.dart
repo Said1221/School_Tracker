@@ -1,18 +1,23 @@
 import 'dart:async';
 
+
 import 'dart:math' show cos, sqrt, asin;
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dio/dio.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:location/location.dart';
 import 'package:tracker/cache_helper.dart';
 import 'package:tracker/constant/component.dart';
+import 'package:tracker/constant/dio_helper.dart';
 import 'package:tracker/cubit.dart';
 import 'package:tracker/notification.dart';
+import 'package:tracker/state.dart';
 
 
 class driverTrack extends StatefulWidget {
@@ -24,101 +29,194 @@ class _driverTrackState extends State<driverTrack> {
 
   @override
   Widget build(BuildContext context){
-    return SafeArea(
-      child: Scaffold(
-        body: Stack(
-          children: [
-            GoogleMap(
-                initialCameraPosition: CameraPosition(target: sourceLocation , zoom: 15),
-
-                polylines: {
-                  Polyline(
-                    polylineId: PolylineId('route'),
-                    points: polylineCoordinates,
-                    color: Colors.red,
-                    width: 6,
-                  ),
-                },
-
-
-                markers: {
-
-                  Marker(
-                    markerId:MarkerId('source'),
-                    // icon: sourceIcon,
-                    position:LatLng(sourceLocation.latitude , sourceLocation.longitude),
-                  ),
-
-                  Marker(
-                    markerId:MarkerId('bus'),
-                    icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet),
-                    position:LatLng(busLat , busLong),
-                  ),
-
-                  Marker(
-                    markerId:MarkerId('home'),
-                    icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
-                    position:LatLng(homeLocation.latitude , homeLocation.longitude),
-                  ),
-
-                },
-
-                onMapCreated: (mapController){
-                  controller.complete(mapController);
-                }
-
-            ),
-
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
+    return BlocProvider(
+      create: (BuildContext)=>AppCubit()..getDriverContact(),
+      child: BlocConsumer<AppCubit , AppState>(
+        listener: (BuildContext contetx , AppState state){},
+          builder: (BuildContext context , AppState state){
+          return SafeArea(
+            child: Scaffold(
+              body: state is AppGetDriverContactSuccessState ?
+              Column(
                 children: [
-
-                  Row(
-                    children: [
-                      Icon(Icons.location_on , color: Colors.red,),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Text('school location' , style: TextStyle(fontSize: 15 , color: Colors.red),),
-                    ],
-                  ),
-
-                  Row(
-                    children: [
-                      Icon(Icons.location_on , color: Colors.deepPurple,),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Text('bus position' , style: TextStyle(fontSize: 15 , color: Colors.red),),
-                    ],
-                  ),
-
-                  Row(
-                    children: [
-                      Icon(Icons.location_on , color: Colors.green,),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Text('home location' , style: TextStyle(fontSize: 15 , color: Colors.red),),
-                    ],
-                  ),
-
-                    Container(
-                    child: Text('${placeDistance.toStringAsFixed(2)}'
+                  Expanded(
+                    flex: 5,
+                    child: Stack(
+                      children: [
+                        GoogleMap(
+                            initialCameraPosition: CameraPosition(target: sourceLocation , zoom: 15),
+                    
+                            polylines: {
+                              Polyline(
+                                polylineId: PolylineId('route'),
+                                points: polylineCoordinates,
+                                color: Colors.red,
+                                width: 6,
+                              ),
+                            },
+                    
+                    
+                            markers: {
+                    
+                              Marker(
+                                markerId:MarkerId('source'),
+                                // icon: sourceIcon,
+                                position:LatLng(sourceLocation.latitude , sourceLocation.longitude),
+                              ),
+                    
+                              Marker(
+                                markerId:MarkerId('bus'),
+                                icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet),
+                                position:LatLng(busLat , busLong),
+                              ),
+                    
+                              Marker(
+                                markerId:MarkerId('home'),
+                                icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
+                                position:LatLng(contactLatitude[x] , contactLongtude[x]),
+                              ),
+                    
+                            },
+                    
+                            onMapCreated: (mapController){
+                              controller.complete(mapController);
+                            }
+                    
+                        ),
+                    
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                    
+                              Row(
+                                children: [
+                                  Icon(Icons.location_on , color: Colors.red,),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  Text('school location' , style: TextStyle(fontSize: 15 , color: Colors.red),),
+                                ],
+                              ),
+                    
+                              Row(
+                                children: [
+                                  Icon(Icons.location_on , color: Colors.deepPurple,),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  Text('bus position' , style: TextStyle(fontSize: 15 , color: Colors.red),),
+                                ],
+                              ),
+                    
+                              Row(
+                                children: [
+                                  Icon(Icons.location_on , color: Colors.green,),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  Text('home location' , style: TextStyle(fontSize: 15 , color: Colors.red),),
+                                ],
+                              ),
+                    
+                              Container(
+                                child: Text('${placeDistance.toStringAsFixed(1)} KM',
+                                  style: TextStyle(fontWeight: FontWeight.bold , fontSize: 20),
+                                ),
+                              ),
+                    
+                              Container(
+                                child: Text('${totalHours}',
+                                  style: TextStyle(fontWeight: FontWeight.bold , fontSize: 20),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   ),
+
+
+                  Expanded(
+                    child: Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                          color: Colors.grey[300],
+                          borderRadius: BorderRadius.circular(25)
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('Total Distance :- ${placeDistance.toStringAsFixed(2)} KM' ,
+                                  style: TextStyle(fontWeight: FontWeight.bold , fontSize: 20),),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Text('Remaining Time :- ${totalHours}' ,
+                                  style: TextStyle(fontWeight: FontWeight.bold , fontSize: 20 , color: Colors.red),)
+
+                              ],
+                            ),
+                            Column(
+                              children: [
+                                Expanded(
+                                  child: CircleAvatar(
+                                    backgroundColor: Colors.red,
+                                    radius: 35,
+                                    child: TextButton(
+                                      onPressed: (){
+
+                                        setState(() {
+                                          if(x != contactLatitude.length-1){
+                                            x += 1;
+                                            getPolyPoints();
+
+                                            dioHelper.postFCM(
+                                                url: 'send',
+                                                data: {
+                                                  'to' : 'ebhhwjf9ToCCh85NQnQ39_:APA91bFcH2eztYAqnqMn8aXANXCSeD6CNVeEyqaQOUHaJHJRGhPg-gYmiUHcnWBVMMMQBtJjG0KsWT0NHbyLHhq8fKavjfrO5NRqus0de28QP6HlUKD0P4PBJ2P4_DKM-luV8LSsQafM'
+                                                }
+                                            );
+                                          }
+                                          else{
+                                            print('you are finished');
+                                          }
+                                        });
+                                      },
+                                      child: Text('End', style: TextStyle(color: Colors.white , fontSize: 20)),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+
                 ],
-              ),
+              ) :
+              Center(child: CircularProgressIndicator(color: Colors.blue,))
+
             ),
-          ],
-        ),
-      
+          );
+          },
       ),
     );
 
   }
+
 
 
 
@@ -131,6 +229,8 @@ class _driverTrackState extends State<driverTrack> {
   List<LatLng>polylineCoordinates = [];
 
   var placeDistance = 0.0;
+  var totalHours = '0 min' ;
+  Dio dio = new Dio();
   int? place;
 
 
@@ -146,10 +246,10 @@ class _driverTrackState extends State<driverTrack> {
   // );
 
 
-  static LatLng homeLocation = LatLng(
-      contactLatitude[0],
-      contactLongtude[0]
-  );
+  // static LatLng homeLocation = LatLng(
+  //     contactLatitude[x],
+  //     contactLongtude[x]
+  // );
 
 
   void getPolyPoints()async{
@@ -160,7 +260,7 @@ class _driverTrackState extends State<driverTrack> {
       PointLatLng(busLat, busLong),
 
 
-      PointLatLng(homeLocation.latitude, homeLocation.longitude),
+      PointLatLng(contactLatitude[x], contactLongtude[x]),
     );
 
     if(result.points.isNotEmpty){
@@ -212,7 +312,8 @@ class _driverTrackState extends State<driverTrack> {
       setState(() {
         busLat = position.latitude;
         busLong = position.longitude;
-        cal(busLat, busLong);
+        // cal(busLat, busLong);
+        cal();
       });
 
       // cal(position.latitude , position.longitude);
@@ -256,13 +357,14 @@ class _driverTrackState extends State<driverTrack> {
 
 
 
-  void cal(latitude , longtude)async{
-    double distanceInMeters = await Geolocator.bearingBetween(
-      latitude,
-      longtude,
-      homeLocation.latitude,
-      homeLocation.longitude,
-    );
+  void cal()async{
+    // latitude , longtude
+    // double distanceInMeters = await Geolocator.bearingBetween(
+    //   latitude,
+    //   longtude,
+    //   homeLocation.latitude,
+    //   homeLocation.longitude,
+    // );
 
     double _coordinateDistance(lat1, lon1, lat2, lon2) {
       var p = 0.017453292519943295;
@@ -279,12 +381,20 @@ class _driverTrackState extends State<driverTrack> {
 // between small segments
     for (int i = 0; i < polylineCoordinates.length - 1; i++) {
       totalDistance += _coordinateDistance(
-        polylineCoordinates[i].latitude,
-        polylineCoordinates[i].longitude,
-        polylineCoordinates[i + 1].latitude,
-        polylineCoordinates[i + 1].longitude,
+        busLat,
+        busLong,
+        contactLatitude[x],
+        contactLongtude[x],
       );
     }
+
+    await dio.get('https://maps.googleapis.com/maps/api/distancematrix/json?destinations=${busLat},${busLong}&origins=${contactLatitude[x]},${contactLongtude[x]}&units=imperial&key=${googleAPIKey}').then((value){
+      print(value.data['rows'][0]['elements'][0]['duration']['text'].toString());
+      setState(() {
+        totalHours = value.data['rows'][0]['elements'][0]['duration']['text'].toString();
+      });
+    });
+
 
 // Storing the calculated total distance of the route
     setState(() {
