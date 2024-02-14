@@ -8,6 +8,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
@@ -119,18 +120,6 @@ class _driverTrackState extends State<driverTrack> {
                                   Text('home location' , style: TextStyle(fontSize: 15 , color: Colors.red),),
                                 ],
                               ),
-                    
-                              Container(
-                                child: Text('${placeDistance.toStringAsFixed(1)} KM',
-                                  style: TextStyle(fontWeight: FontWeight.bold , fontSize: 20),
-                                ),
-                              ),
-                    
-                              Container(
-                                child: Text('${totalHours}',
-                                  style: TextStyle(fontWeight: FontWeight.bold , fontSize: 20),
-                                ),
-                              ),
                             ],
                           ),
                         ),
@@ -174,19 +163,33 @@ class _driverTrackState extends State<driverTrack> {
                                       onPressed: (){
 
                                         setState(() {
-                                          if(x != contactLatitude.length-1){
-                                            x += 1;
-                                            getPolyPoints();
 
+                                          if( y < contactToken.length){
                                             dioHelper.postFCM(
                                                 url: 'send',
                                                 data: {
-                                                  'to' : 'ebhhwjf9ToCCh85NQnQ39_:APA91bFcH2eztYAqnqMn8aXANXCSeD6CNVeEyqaQOUHaJHJRGhPg-gYmiUHcnWBVMMMQBtJjG0KsWT0NHbyLHhq8fKavjfrO5NRqus0de28QP6HlUKD0P4PBJ2P4_DKM-luV8LSsQafM'
+                                                  'to' : '${contactToken[x].toString()}',
                                                 }
-                                            );
+                                            ).then((value){
+                                              y += 1;
+                                              print(value);
+                                            });
+                                            if(x != contactLatitude.length-1){
+                                              getPolyPoints();
+                                              x += 1;
+                                            }
                                           }
+
                                           else{
-                                            print('you are finished');
+                                            Fluttertoast.showToast(
+                                                msg: 'all students were successfully arrived \n go back to school',
+                                                timeInSecForIosWeb: 3,
+                                                gravity: ToastGravity.BOTTOM,
+                                                textColor: Colors.white,
+                                                toastLength: Toast.LENGTH_LONG,
+                                                fontSize: 16,
+                                                backgroundColor: Colors.green
+                                            );
                                           }
                                         });
                                       },

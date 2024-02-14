@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:tracker/admin/busLocation.dart';
 import 'package:tracker/constant/component.dart';
 import 'package:tracker/cubit.dart';
 import 'package:tracker/state.dart';
@@ -80,6 +81,7 @@ class _busesState extends State<buses> {
                               children: [
                                 Expanded(child: Text(busNumbers[index]['busNum'])),
                                 IconButton(onPressed: (){
+                                  navigateTo(context, busLocation(index));
                                 },
                                     icon: Image.asset('assets/tracking.png', color: Colors.green,scale: 20,)
                                 ),

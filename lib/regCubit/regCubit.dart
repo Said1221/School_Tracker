@@ -80,6 +80,7 @@ class RegCubit extends Cubit<RegState>{
     required String password,
     required double latitude,
     required double longitude,
+    required String token,
 }){
     emit(regParentsInitialState());
     FirebaseAuth.instance.createUserWithEmailAndPassword(
@@ -87,13 +88,14 @@ class RegCubit extends Cubit<RegState>{
         password: password
     ).then((value){
       createParents(
-          name: name,
-          email: email,
-          schoolEmail: schoolEmail,
-          phone: phone,
-          latitude: latitude,
-          longitude: longitude,
-          UID: value.user!.uid,
+        name: name,
+        email: email,
+        schoolEmail: schoolEmail,
+        phone: phone,
+        latitude: latitude,
+        longitude: longitude,
+        UID: value.user!.uid,
+        token: token,
       );
     }).catchError((error){
       message2 = error.toString();
@@ -110,6 +112,7 @@ class RegCubit extends Cubit<RegState>{
     required double latitude,
     required double longitude,
     required String UID,
+    required String token,
 }){
 
     regParentsModel model =regParentsModel(
@@ -120,6 +123,7 @@ class RegCubit extends Cubit<RegState>{
       latitude: latitude,
       longitude: longitude,
       UID: UID,
+      token: token,
     );
     
     FirebaseFirestore.instance.collection('users').get().then((value){

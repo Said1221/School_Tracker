@@ -46,7 +46,7 @@ class parentsHome extends StatelessWidget {
           height: 150,
         ),
 
-        Text('Follow the current location of your chgildren' , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 15),),
+        Text('Follow the current location of your children' , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 15),),
 
         SizedBox(
           height: 20,

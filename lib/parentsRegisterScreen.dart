@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -200,6 +201,7 @@ class parentsRegisterScreen extends StatelessWidget {
                                   password: passwordController.text,
                                   latitude: CacheHelper.getData(key: 'latitude'),
                                   longitude: CacheHelper.getData(key: 'longitude'),
+                                  token : token,
                                 );
                               },
                                 child: const Text("Register",style: TextStyle(color: Colors.black),),

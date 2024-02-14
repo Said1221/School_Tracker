@@ -42,18 +42,18 @@ class driverHome extends StatelessWidget {
               ),
             ],
           ),
-      
+
           const SizedBox(
             height: 150,
           ),
-          
+
           Text('Start the track of delivering students to their homes' , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 15),),
-      
-      
+
+
           SizedBox(
             height: 20,
           ),
-      
+
           InkWell(
             onTap: () => navigateTo(context, driverTrack()),
             child: Container(
@@ -74,7 +74,24 @@ class driverHome extends StatelessWidget {
               ),
             ),
           ),
-      
+
+          SizedBox(height: 10,),
+
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Note',style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold , fontSize: 15)),
+                Text('Once you start the trip, your first route will be created and '
+                    'when you arrive you must End the route to inform the parents of your '
+                    'arrival and the next route will be automatically created according '
+                    'to the students’ order.',
+                    style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold , fontSize: 15)),
+              ],
+            ),
+          ),
+
         ],
       ),
     );

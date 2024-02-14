@@ -11,6 +11,8 @@ var message2;
 var ID;
 var ID2;
 
+var token;
+
 var parentContact;
 var parentContact2;
 var parentContact3;
@@ -48,8 +50,11 @@ List<dynamic>contactsClass = [];
 
 
 int x = 0;
+int y = 0;
 List<dynamic>contactLatitude = [];
 List<dynamic>contactLongtude = [];
+
+List<dynamic>contactToken = [];
 
 
 List<dynamic>lat = [];

@@ -6,6 +6,7 @@ class regParentsModel{
   late double latitude;
   late double longitude;
   late String UID;
+  late String token;
 
   regParentsModel({
     required this.name,
@@ -15,6 +16,7 @@ class regParentsModel{
     required this.latitude,
     required this.longitude,
     required this.UID,
+    required this.token,
   });
 
   // regModel.fromJson(Map<String,dynamic>json){
@@ -34,6 +36,7 @@ class regParentsModel{
       'latitude' : latitude,
       'longitude' : longitude,
       'UID' : UID,
+      'token' : token,
     };
   }
 

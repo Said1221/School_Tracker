@@ -319,6 +319,7 @@ class AppCubit extends Cubit<AppState>{
     contactsPhone.clear();
     contactLatitude.clear();
     contactLongtude.clear();
+    contactToken.clear();
 
     FirebaseFirestore.instance.collection('users')
         .get().then((value){
@@ -351,6 +352,16 @@ class AppCubit extends Cubit<AppState>{
 
                   });
 
+                  FirebaseFirestore.instance.collection('users').doc(ID).collection('parents')
+                      .get().then((value){
+                    value.docs.forEach((element){
+                      contactToken.add(element.data()['token']);
+                    });
+                    print('toooooooooooooooooooo');
+                    print(contactToken);
+
+                  });
+
                   bus = element.data()['bus'];
                   FirebaseFirestore.instance.collection('users').doc(ID)
                   .collection('STUDENT').get().then((value){
@@ -369,12 +380,12 @@ class AppCubit extends Cubit<AppState>{
                         print(contactLongtude);
                       }
                     });
+
                     emit(AppGetDriverContactSuccessState());
                   }).catchError((error){
                     emit(AppGetDriverContactErrorState());
                     print(error.toString());
                   });
-
                 }
               });
             });

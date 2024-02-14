@@ -5,7 +5,7 @@
 
 
     <application
-        android:label="tracker"
+        android:label="School tracker"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

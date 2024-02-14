@@ -29,6 +29,7 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 }
 
 
+
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -44,16 +45,15 @@ void main() async{
 
   dioHelper.init();
 
-  var token = await FirebaseMessaging.instance.getToken();
+  token = await FirebaseMessaging.instance.getToken();
   print(token);
 
   FirebaseMessaging.onMessage.listen((event){
-    print('on message');
+    print('Your children have arrived');
     print(event.data.toString());
 
-    Fluttertoast.showToast(msg: 'on message');
+    Fluttertoast.showToast(msg: 'Your children have arrived' , backgroundColor: Colors.green);
   });
-  //
   FirebaseMessaging.onMessageOpenedApp.listen((event){
     NotificationService().showNotification(
         title:'School Tracker',
