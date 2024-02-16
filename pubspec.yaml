@@ -55,6 +55,7 @@ dependencies:
   flutter_local_notifications: ^16.3.2
   flutter_background_service: ^0.1.5
   smooth_page_indicator: ^1.1.0
+  native_device_orientation: ^2.0.3
 
 
 
@@ -101,6 +102,9 @@ flutter:
     - assets/pointer.png
     - assets/bus.png
     - assets/blackboard.png
+    - assets/bus-driver.png
+    - assets/family.png
+    - assets/locationn.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:

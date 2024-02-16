@@ -250,7 +250,7 @@ class _studentsState extends State<students> {
             },
               elevation: 20,
               backgroundColor: Colors.white,
-              child: const Text('+',style: TextStyle(color: Colors.black , fontSize: 30),),
+              child: Text('+',style: TextStyle(color: Colors.black , fontSize: 25), textAlign: TextAlign.center,),
             ),
           );
           },

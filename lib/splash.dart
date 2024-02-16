@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:tracker/constant/component.dart';
 import 'package:tracker/loginScreen.dart';
@@ -12,6 +13,7 @@ class onBoardingModel{
 String image;
 String title;
 String info;
+
 
 onBoardingModel({
   required this.image,
@@ -34,21 +36,21 @@ class _splashState extends State<splash> {
   List<onBoardingModel>boarding = [
 
     onBoardingModel(
-      image : 'assets/board.jpg',
+      image : 'assets/locationn.png',
       title: 'Welcome',
       info: 'If you register as a school\'s administrator , please ensure you register in your '
           'school location',
     ),
 
     onBoardingModel(
-      image : 'assets/1.jpg',
+      image : 'assets/family.png',
       title: 'Register as a Parent',
       info: 'If you register as a Parent , please be sure to register in the '
           'location where your child lives',
     ),
 
     onBoardingModel(
-      image : 'assets/2.jpg',
+      image : 'assets/bus-driver.png',
       title: 'Register as a Driver',
       info: 'If you are driver , you should login into your account using your email address '
           'and your mobile phone , it\'s added by the school administrator'
@@ -57,11 +59,15 @@ class _splashState extends State<splash> {
 
   @override
   Widget build(BuildContext context) {
+    
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
+
     return SafeArea(
       child: Scaffold(
         body: Column(
           children: [
-
             ClipPath(
               clipper: MyClipper(),
               child: Container(
@@ -155,23 +161,34 @@ class _splashState extends State<splash> {
     );
   }
 
-  Widget buildOnBoarding(onBoardingModel model)=>Column(
-    mainAxisAlignment: MainAxisAlignment.center,
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Padding(
-        padding: const EdgeInsets.only(bottom: 30 , left: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(model.title , style: TextStyle(fontSize: 20 , fontWeight: FontWeight.bold , color: Colors.orange),),
-            SizedBox(
-              height: 5,
-            ),
-            Text(model.info , style: TextStyle(fontSize: 15 , color: Colors.grey),),
-          ],
+  Widget buildOnBoarding(onBoardingModel model)=>SingleChildScrollView(
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(bottom: 30 , left: 20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+
+              Center(child: Image.asset(model.image , scale: 3,)),
+
+              SizedBox(
+                height: 50,
+              ),
+
+              Text(model.title , style: TextStyle(fontSize: 20 , fontWeight: FontWeight.bold , color: Colors.orange),),
+              SizedBox(
+                height: 5,
+              ),
+              Text(model.info , style: TextStyle(fontSize: 15 , color: Colors.grey),),
+
+            ],
+          ),
         ),
-      ),
-    ],
+      ],
+    ),
   );
 }

@@ -39,13 +39,13 @@ class loginScreen extends StatelessWidget {
               backgroundColor: Colors.green,
             );
             if(visitor=='admin'){
-              navigateTo(context, adminLayout());
+              NavigatAndFinish(context, adminLayout());
             }
             if(visitor=='parents'){
-              navigateTo(context, parentLayout());
+              NavigatAndFinish(context, parentLayout());
             }
             if(visitor=='driver'){
-              navigateTo(context, driverLayout());
+              NavigatAndFinish(context, driverLayout());
             }
           }
 
@@ -66,143 +66,145 @@ class loginScreen extends StatelessWidget {
           LoginCubit cubit = LoginCubit.get(context);
           return SafeArea(
             child: Scaffold(
-              body: Stack(
-                children: [
-                  ClipPath(
-                    clipper: MyClipper(),
-                    child: Container(
-                        height: 700,
-                        width: double.infinity,
-                        decoration: const BoxDecoration(
-                            gradient:LinearGradient(
-                                begin:Alignment.topRight,
-                                end: Alignment.bottomLeft,
-                                colors:[
-                                  Color(0xFFF16826),
-                                  Color(0xFFC75833),
-                                ]
-                            )
-                        )
+              body: SingleChildScrollView(
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    ClipPath(
+                      clipper: MyClipper(),
+                      child: Container(
+                          height: 700,
+                          width: double.infinity,
+                          decoration: const BoxDecoration(
+                              gradient:LinearGradient(
+                                  begin:Alignment.topRight,
+                                  end: Alignment.bottomLeft,
+                                  colors:[
+                                    Color(0xFFF16826),
+                                    Color(0xFFC75833),
+                                  ]
+                              )
+                          )
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
+                    Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          TextFormField(
+                            controller: emailController,
+                            keyboardType: TextInputType.emailAddress,
+                            style: TextStyle(color: Colors.white),
+                            validator: (value){
+                              return null;
 
-                        TextFormField(
-                          controller: emailController,
-                          keyboardType: TextInputType.emailAddress,
-                          style: TextStyle(color: Colors.white),
-                          validator: (value){
-                            return null;
-
-                            // if(value.isEmpty){
-                            //   return 'please enter your email address';
-                            // }
-                          },
-                          decoration: const InputDecoration(
-                              label: Text('Email Address',style: TextStyle(color: Colors.white),),
-                              prefixIcon:Icon(
-                                Icons.email,
-                                color: Colors.white,
-                              )
-                          ),
-                        ),
-                        visitor != 'driver' ? TextFormField(
-                          controller: passwordController,
-                          keyboardType: TextInputType.visiblePassword,
-                          style: TextStyle(color: Colors.white),
-                          obscureText: true,
-                          validator: (value){
-                            return null;
-
-                            // if(value.isEmpty){
-                            //   return 'please enter your password';
-                            // }
-                          },
-                          decoration: const InputDecoration(
-                              label: Text('Password',style: TextStyle(color: Colors.white),),
-                              prefixIcon: Icon(
-                                Icons.lock,
-                                color: Colors.white,
-                              )
-                          ),
-                        )
-                        : TextFormField(
-                          controller: phoneController,
-                          keyboardType: TextInputType.number,
-                          style: TextStyle(color: Colors.white),
-                          validator: (value){
-                            return null;
-
-                            // if(value.isEmpty){
-                            //   return 'please enter your password';
-                            // }
-                          },
-                          decoration: const InputDecoration(
-                              label: Text('Phone number',style: TextStyle(color: Colors.white),),
-                              prefixIcon: Icon(
-                                Icons.lock,
-                                color: Colors.white,
-                              )
-                          ),
-                        ),
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: state is! loginUserInitialState ?
-                          Container(
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: Colors.white
-                            ),
-                            child: MaterialButton(onPressed: (){
-                              visitor != 'driver' ? cubit.loginUser(
-                                  email: emailController.text,
-                                  password: passwordController.text,
-                              ) : cubit.loginUser(
-                                  email: emailController.text,
-                                  password: phoneController.text
-                              );
+                              // if(value.isEmpty){
+                              //   return 'please enter your email address';
+                              // }
                             },
-                              child: const Text("Login",style: TextStyle(color: Colors.black),),
+                            decoration: const InputDecoration(
+                                label: Text('Email Address',style: TextStyle(color: Colors.white),),
+                                prefixIcon:Icon(
+                                  Icons.email,
+                                  color: Colors.white,
+                                )
                             ),
-                          ) :
-                              Center(child: CircularProgressIndicator(color: Colors.orange,))
-                        ),
+                          ),
+                          visitor != 'driver' ? TextFormField(
+                            controller: passwordController,
+                            keyboardType: TextInputType.visiblePassword,
+                            style: TextStyle(color: Colors.white),
+                            obscureText: true,
+                            validator: (value){
+                              return null;
 
-                        visitor !='driver'?
-                        Center(
-                          child: TextButton(onPressed: (){
-                            if(visitor=='admin'){
-                              navigateTo(context, adminRegisterScreen());
-                            }
+                              // if(value.isEmpty){
+                              //   return 'please enter your password';
+                              // }
+                            },
+                            decoration: const InputDecoration(
+                                label: Text('Password',style: TextStyle(color: Colors.white),),
+                                prefixIcon: Icon(
+                                  Icons.lock,
+                                  color: Colors.white,
+                                )
+                            ),
+                          )
+                          : TextFormField(
+                            controller: phoneController,
+                            keyboardType: TextInputType.number,
+                            style: TextStyle(color: Colors.white),
+                            validator: (value){
+                              return null;
 
-                            else{
-                              navigateTo(context, parentsRegisterScreen());
-                            }
+                              // if(value.isEmpty){
+                              //   return 'please enter your password';
+                              // }
+                            },
+                            decoration: const InputDecoration(
+                                label: Text('Phone number',style: TextStyle(color: Colors.white),),
+                                prefixIcon: Icon(
+                                  Icons.lock,
+                                  color: Colors.white,
+                                )
+                            ),
+                          ),
 
-                          },
-                            child: Text('Create an account ?',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 15,
+                          const SizedBox(
+                            height: 15,
+                          ),
+
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: state is! loginUserInitialState ?
+                            Container(
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: Colors.white
+                              ),
+                              child: MaterialButton(onPressed: (){
+                                visitor != 'driver' ? cubit.loginUser(
+                                    email: emailController.text,
+                                    password: passwordController.text,
+                                ) : cubit.loginUser(
+                                    email: emailController.text,
+                                    password: phoneController.text
+                                );
+                              },
+                                child: const Text("Login",style: TextStyle(color: Colors.black),),
+                              ),
+                            ) :
+                                Center(child: CircularProgressIndicator(color: Colors.orange,))
+                          ),
+
+                          visitor !='driver'?
+                          Center(
+                            child: TextButton(onPressed: (){
+                              if(visitor=='admin'){
+                                navigateTo(context, adminRegisterScreen());
+                              }
+
+                              else{
+                                navigateTo(context, parentsRegisterScreen());
+                              }
+
+                            },
+                              child: Text('Create an account ?',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 15,
+                                ),
                               ),
                             ),
-                          ),
-                        ):
-                            Text(''),
-                      ],
+                          ):
+                              Text(''),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           );

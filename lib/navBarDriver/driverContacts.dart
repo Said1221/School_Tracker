@@ -30,10 +30,9 @@ class _driverContactState extends State<driverContact> {
             ),
             body: Padding(
               padding: EdgeInsets.all(8.0),
-              child: SizedBox(
-                width: double.infinity,
-                child: state is AppGetDriverContactSuccessState ?
-                Column(
+              child: state is AppGetDriverContactSuccessState ?
+              SingleChildScrollView(
+                child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children:
@@ -69,36 +68,38 @@ class _driverContactState extends State<driverContact> {
                       SizedBox(
                         height: 10,
                       ),
-                      Expanded(
-                        child: ListView.separated(
-                            itemBuilder: (context , index)=>Card(
-                              elevation: 10,
-                              child: Padding(
-                                padding: EdgeInsets.all(15.0),
-                                child: Column(
-                                  children: [
-                                    CircleAvatar(
-                                      backgroundColor: Colors.white,
-                                      backgroundImage: AssetImage('assets/students.png'),
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Text(contactsName[index].toString(), style: TextStyle(fontSize: 20),),
-                                    Text(contactsAddress[index].toString()),
-                                    Text(contactsPhone[index].toString() , style: TextStyle(color: Colors.grey),),
-                                  ],
+                      ListView.separated(
+                        shrinkWrap: true,
+                        primary: false,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemBuilder: (context , index)=>Card(
+                          elevation: 10,
+                          child: Padding(
+                            padding: EdgeInsets.all(15.0),
+                            child: Column(
+                              children: [
+                                CircleAvatar(
+                                  backgroundColor: Colors.white,
+                                  backgroundImage: AssetImage('assets/students.png'),
                                 ),
-                              ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Text(contactsName[index].toString(), style: TextStyle(fontSize: 20),),
+                                Text(contactsAddress[index].toString()),
+                                Text(contactsPhone[index].toString() , style: TextStyle(color: Colors.grey),),
+                              ],
                             ),
-                            separatorBuilder: (context,index)=>myDivider(),
-                            itemCount: contactsName.length,
+                          ),
                         ),
+                        separatorBuilder: (context,index)=>myDivider(),
+                        itemCount: contactsName.length,
                       ),
+                
                     ]
-                ) :
-                Center(child: CircularProgressIndicator(color: Colors.blue,))
-              ),
+                ),
+              ) :
+              Center(child: CircularProgressIndicator(color: Colors.blue,)),
             ),
           );
           },

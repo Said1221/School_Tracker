@@ -27,15 +27,12 @@ class _parentsContactState extends State<parentsContact> {
             ),
             body:  Padding(
               padding: EdgeInsets.all(8.0),
-              child: SizedBox(
-                width: double.infinity,
-                child: state is! AppGetDataInitialState ?
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+              child: state is! AppGetDataInitialState ?
+              SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  children:
-                  [
-
+                  children: [
                     Text('School details' , style: TextStyle(fontSize: 20 , fontWeight: FontWeight.bold),),
                     Card(
                       elevation: 10,
@@ -63,11 +60,39 @@ class _parentsContactState extends State<parentsContact> {
                     SizedBox(
                       height: 10,
                     ),
-
                     Text('your children\'s driver' , style: TextStyle(fontSize: 20 , fontWeight: FontWeight.bold),),
+                    Card(
+                      elevation: 10,
+                      child: Padding(
+                        padding: EdgeInsets.all(15.0),
+                        child: Column(
+                          children: [
+                            CircleAvatar(
+                              backgroundColor: Colors.white,
+                              backgroundImage: AssetImage('assets/driver.png'),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text(driverName.toString() , style: TextStyle(fontSize: 20),),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text(driverEmail.toString()),
+                            Text(driverPhone.toString() , style: TextStyle(color: Colors.grey),),
+                          ],
+                        ),
+                      ),
+                    ),
                     SizedBox(
-                      width: double.infinity,
-                      child: Card(
+                      height: 10,
+                    ),
+                    Text('your childrens' , style: TextStyle(fontSize: 20 , fontWeight: FontWeight.bold),),
+                    ListView.separated(
+                      primary: false,
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemBuilder: (context , index)=>Card(
                         elevation: 10,
                         child: Padding(
                           padding: EdgeInsets.all(15.0),
@@ -75,62 +100,31 @@ class _parentsContactState extends State<parentsContact> {
                             children: [
                               CircleAvatar(
                                 backgroundColor: Colors.white,
-                                backgroundImage: AssetImage('assets/driver.png'),
+                                backgroundImage: AssetImage('assets/students.png'),
                               ),
                               SizedBox(
                                 height: 10,
                               ),
-                              Text(driverName.toString() , style: TextStyle(fontSize: 20),),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Text(driverEmail.toString()),
-                              Text(driverPhone.toString() , style: TextStyle(color: Colors.grey),),
+                              Text(contactsName[index].toString(), style: TextStyle(fontSize: 20),),
+                              Text(contactsClass[index].toString()),
                             ],
                           ),
                         ),
                       ),
+                      separatorBuilder: (context,index)=>myDivider(),
+                      itemCount: contactsName.length,
                     ),
-
-                    SizedBox(
-                      height: 10,
-                    ),
-
-                    Text('your childrens' , style: TextStyle(fontSize: 20 , fontWeight: FontWeight.bold),),
-                    Expanded(
-                      child: ListView.separated(
-                        itemBuilder: (context , index)=>Card(
-                          elevation: 10,
-                          child: Padding(
-                            padding: EdgeInsets.all(15.0),
-                            child: Column(
-                              children: [
-                                CircleAvatar(
-                                  backgroundColor: Colors.white,
-                                  backgroundImage: AssetImage('assets/students.png'),
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Text(contactsName[index].toString(), style: TextStyle(fontSize: 20),),
-                                Text(contactsClass[index].toString()),
-                              ],
-                            ),
-                          ),
-                        ),
-                        separatorBuilder: (context,index)=>myDivider(),
-                        itemCount: contactsName.length,
-                      ),
-                    ),
-
-                  ]
+                  ],
+                ),
               ) :
-                Center(child: CircularProgressIndicator(color: Colors.blue))
-              ),
+              Center(child: CircularProgressIndicator(color: Colors.blue)),
             ),
           );
           },
       ),
     );
   }
+
+  
+
 }

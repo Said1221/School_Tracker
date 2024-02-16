@@ -67,45 +67,49 @@ class _driversState extends State<drivers> {
               padding:  EdgeInsets.all(8.0),
               child: state is! AppGetDataInitialState ?
               ListView.separated(
-              itemBuilder: (context , index)=>Card(
-                elevation: 5,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 40,
-                        backgroundColor: Colors.grey[300],
-                        backgroundImage: const AssetImage('assets/driver.png'),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Expanded(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(driverDetails[index]['name']),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                Text(driverDetails[index]['phone'] , style: TextStyle(color: Colors.grey),)
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Image.asset('assets/bus.png' , scale: 20,),
-                                Text(driverDetails[index]['bus'] , style: TextStyle(color: Colors.green),),
-                              ],
-                            ),
-                          ],
+              itemBuilder: (context , index)=>SingleChildScrollView(
+                child: Card(
+                  elevation: 5,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 40,
+                          backgroundColor: Colors.grey[300],
+                          backgroundImage: AssetImage('assets/driver.png'),
                         ),
-                      ),
-                    ],
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(driverDetails[index]['name']),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Text(driverDetails[index]['phone'] , style: TextStyle(color: Colors.grey),)
+                                  ],
+                                ),
+                              ),
+                              Column(
+                                children: [
+                                  Image.asset('assets/bus.png' , scale: 20,),
+                                  Text(driverDetails[index]['bus'] , style: TextStyle(color: Colors.green),),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -253,7 +257,7 @@ class _driversState extends State<drivers> {
             },
               elevation: 20,
               backgroundColor: Colors.white,
-              child: const Text('+',style: TextStyle(color: Colors.black , fontSize: 30),),
+              child: Text('+',style: TextStyle(color: Colors.black , fontSize: 25), textAlign: TextAlign.center,),
             ),
           );
           },

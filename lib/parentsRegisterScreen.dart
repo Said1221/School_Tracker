@@ -56,6 +56,7 @@ class parentsRegisterScreen extends StatelessWidget {
             child: Scaffold(
               body: SingleChildScrollView(
                 child: Stack(
+                  alignment: Alignment.center,
                   children: [
                     ClipPath(
                       clipper: MyClipper(),

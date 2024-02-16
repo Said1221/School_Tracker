@@ -137,72 +137,77 @@ class _driverTrackState extends State<driverTrack> {
                       ),
                       child: Padding(
                         padding: const EdgeInsets.all(10.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('Total Distance :- ${placeDistance.toStringAsFixed(2)} KM' ,
-                                  style: TextStyle(fontWeight: FontWeight.bold , fontSize: 20),),
-                                SizedBox(
-                                  height: 10,
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SingleChildScrollView(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text('Total Distance :- ${placeDistance.toStringAsFixed(2)} KM' ,
+                                      style: TextStyle(fontWeight: FontWeight.bold , fontSize: 20),),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Text('Remaining Time :- ${totalHours}' ,
+                                      style: TextStyle(fontWeight: FontWeight.bold , fontSize: 20 , color: Colors.red),)
+
+                                  ],
                                 ),
-                                Text('Remaining Time :- ${totalHours}' ,
-                                  style: TextStyle(fontWeight: FontWeight.bold , fontSize: 20 , color: Colors.red),)
+                              ),
+                              Column(
+                                children: [
+                                  Expanded(
+                                    child: CircleAvatar(
+                                      backgroundColor: Colors.red,
+                                      radius: 35,
+                                      child: TextButton(
+                                        onPressed: (){
 
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Expanded(
-                                  child: CircleAvatar(
-                                    backgroundColor: Colors.red,
-                                    radius: 35,
-                                    child: TextButton(
-                                      onPressed: (){
+                                          setState(() {
 
-                                        setState(() {
-
-                                          if( y < contactToken.length){
-                                            dioHelper.postFCM(
-                                                url: 'send',
-                                                data: {
-                                                  'to' : '${contactToken[x].toString()}',
-                                                }
-                                            ).then((value){
-                                              y += 1;
-                                              print(value);
-                                            });
-                                            if(x != contactLatitude.length-1){
-                                              getPolyPoints();
-                                              x += 1;
+                                            if( y < contactToken.length){
+                                              dioHelper.postFCM(
+                                                  url: 'send',
+                                                  data: {
+                                                    'to' : '${contactToken[x].toString()}',
+                                                  }
+                                              ).then((value){
+                                                y += 1;
+                                                print(value);
+                                              });
+                                              if(x != contactLatitude.length-1){
+                                                getPolyPoints();
+                                                x += 1;
+                                              }
                                             }
-                                          }
 
-                                          else{
-                                            Fluttertoast.showToast(
-                                                msg: 'all students were successfully arrived \n go back to school',
-                                                timeInSecForIosWeb: 3,
-                                                gravity: ToastGravity.BOTTOM,
-                                                textColor: Colors.white,
-                                                toastLength: Toast.LENGTH_LONG,
-                                                fontSize: 16,
-                                                backgroundColor: Colors.green
-                                            );
-                                          }
-                                        });
-                                      },
-                                      child: Text('End', style: TextStyle(color: Colors.white , fontSize: 20)),
+                                            else{
+                                              Fluttertoast.showToast(
+                                                  msg: 'all students were successfully arrived \n go back to school',
+                                                  timeInSecForIosWeb: 3,
+                                                  gravity: ToastGravity.BOTTOM,
+                                                  textColor: Colors.white,
+                                                  toastLength: Toast.LENGTH_LONG,
+                                                  fontSize: 16,
+                                                  backgroundColor: Colors.green
+                                              );
+                                            }
+                                          });
+                                        },
+                                        child: Text('End', style: TextStyle(color: Colors.white , fontSize: 20)),
+                                      ),
                                     ),
                                   ),
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                              ],
-                            )
-                          ],
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ),

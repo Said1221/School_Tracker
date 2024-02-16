@@ -47,7 +47,10 @@ class driverHome extends StatelessWidget {
             height: 150,
           ),
 
-          Text('Start the track of delivering students to their homes' , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 15),),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text('Start the track of delivering students to their homes' , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 15),),
+          ),
 
 
           SizedBox(

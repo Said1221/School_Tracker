@@ -59,34 +59,46 @@ class _busesState extends State<buses> {
               padding: const EdgeInsets.all(8.0),
 
               child: state is! AppGetDataInitialState ?
-              GridView.count(crossAxisCount: 2,
+              GridView.count(
+                childAspectRatio: 1/2,
+                mainAxisSpacing: 1,
+                crossAxisSpacing: 1,
+                shrinkWrap: true,
+                physics: BouncingScrollPhysics(),
+                crossAxisCount: 2,
                 children: List.generate(busNumbers.length, (index) => Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding:  EdgeInsets.all(8.0),
                   child: Card(
                     elevation: 2,
                     child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding:  EdgeInsets.all(8.0),
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           CircleAvatar(
                             radius: 50,
                             backgroundColor: Colors.grey[300],
                             backgroundImage: AssetImage('assets/bus.png'),
                           ),
+
                           SizedBox(
-                            width: 10,
+                            height: 20,
                           ),
+                          
+
+                          Text('Bus Number'),
+                          Text(busNumbers[index]['busNum']),
+
                           Expanded(
-                            child: Row(
-                              children: [
-                                Expanded(child: Text(busNumbers[index]['busNum'])),
-                                IconButton(onPressed: (){
-                                  navigateTo(context, busLocation(index));
-                                },
-                                    icon: Image.asset('assets/tracking.png', color: Colors.green,scale: 20,)
-                                ),
-                              ],
-                            ),
+                            child: CircleAvatar(
+                              backgroundColor: Colors.teal,
+                              child: IconButton(onPressed: (){
+                                navigateTo(context, busLocation(index));
+                              },
+                                  icon: Image.asset('assets/tracking.png', color: Colors.lightGreen,scale: 20,)
+                              ),
+                            )
                           ),
                         ],
                       ),
@@ -149,7 +161,7 @@ class _busesState extends State<buses> {
             },
               elevation: 20,
               backgroundColor: Colors.white,
-              child: const Text('+',style: TextStyle(color: Colors.black , fontSize: 30),),
+              child: Text('+',style: TextStyle(color: Colors.black , fontSize: 25), textAlign: TextAlign.center,),
             ),
           );
           },
